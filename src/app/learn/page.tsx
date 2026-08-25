@@ -346,6 +346,7 @@ export default function LearnPage() {
   const [completing, setCompleting] = useState(false);
   const playerRef = useRef<any>(null);
   const videoContainerRef = useRef<HTMLDivElement>(null);
+  const statsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const timeoutId = setTimeout(() => setLoading(false), 8000);
@@ -553,7 +554,7 @@ export default function LearnPage() {
             <p className="text-[#B8BCCF]">Watch video tutorials and pass the quiz to earn points</p>
           </div>
 
-          <div className="grid lg:grid-cols-4 gap-4 mb-8">
+          <div ref={statsRef} className="grid lg:grid-cols-4 gap-4 mb-8">
             <div className="bg-[#1A2332] rounded-xl border border-[#2E3A4F] p-4 flex items-center gap-4">
               <div className="p-3 bg-[#C0FF00]/10 rounded-lg">
                 <BookOpen className="w-6 h-6 text-[#C0FF00]" />
@@ -859,7 +860,7 @@ export default function LearnPage() {
                       setSelectedModule(module);
                       handleCloseQuiz();
                       setTimeout(() => {
-                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                        statsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
                       }, 50);
                     }}
                     className={`w-full text-left p-4 rounded-xl border transition-all ${
