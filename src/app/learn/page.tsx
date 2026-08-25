@@ -91,7 +91,7 @@ const fallbackModules: Module[] = [
   {
     id: 4, title: "Smishing — SMS Phishing",
     description: "Recognize fraudulent text messages designed to steal credentials or install malware.",
-    duration: "7 min", video_id: "sHRS7pbBHcQ", level: "Beginner", points: 15,
+    duration: "7 min", video_id: "hfXhJ3LcZFU", level: "Beginner", points: 15,
     notes: [
       { type: 'key',     emoji: '🔑', text: 'Smishing texts impersonate banks, delivery services (FedEx, DHL), or government agencies.' },
       { type: 'warning', emoji: '⚠️', text: 'Never click links in unsolicited texts — go directly to the official app or website instead.' },
@@ -107,7 +107,7 @@ const fallbackModules: Module[] = [
   {
     id: 5, title: "Vishing — Voice Phishing",
     description: "Learn how phone call scams work and how to handle suspicious callers confidently.",
-    duration: "9 min", video_id: "SBBx-m6U_Qs", level: "Beginner", points: 15,
+    duration: "9 min", video_id: "sTqPHBSBhRs", level: "Beginner", points: 15,
     notes: [
       { type: 'key',     emoji: '🔑', text: 'Vishing attackers impersonate tech support (Microsoft, Apple), banks, or government officials.' },
       { type: 'warning', emoji: '⚠️', text: 'Caller ID can be SPOOFED — a call from your bank\'s number may not be real.' },
@@ -123,7 +123,7 @@ const fallbackModules: Module[] = [
   {
     id: 6, title: "QR Code Phishing (Quishing)",
     description: "Discover how attackers embed malicious URLs in QR codes to bypass email security.",
-    duration: "8 min", video_id: "v4jJdmQpHPg", level: "Intermediate", points: 20,
+    duration: "8 min", video_id: "LWr6pWpELJI", level: "Intermediate", points: 20,
     notes: [
       { type: 'key',     emoji: '🔑', text: 'QR codes hide URLs — you can\'t see the destination before scanning, making them ideal for bypassing security tools.' },
       { type: 'warning', emoji: '⚠️', text: 'Attackers place fake QR codes over real ones in restaurants, parking meters, and offices.' },
@@ -187,7 +187,7 @@ const fallbackModules: Module[] = [
   {
     id: 10, title: "Spotting Fake Websites",
     description: "Learn to identify cloned websites, typosquatting domains, and fake login pages.",
-    duration: "11 min", video_id: "MBkqfWkIi5w", level: "Beginner", points: 15,
+    duration: "11 min", video_id: "zflsg6TRuos", level: "Beginner", points: 15,
     notes: [
       { type: 'key',     emoji: '🔑', text: 'Fake sites use typosquatting: paypa1.com, g00gle.com — always check domain spelling carefully.' },
       { type: 'warning', emoji: '⚠️', text: 'HTTPS and the padlock do NOT mean safe — phishing sites also use HTTPS. It only means encrypted.' },
@@ -235,7 +235,7 @@ const fallbackModules: Module[] = [
   {
     id: 13, title: "Safe Browsing & Public Wi-Fi",
     description: "Protect yourself online with safe browsing habits and VPN usage on public networks.",
-    duration: "9 min", video_id: "_wQTRMBAvzg", level: "Beginner", points: 15,
+    duration: "9 min", video_id: "bdVkkRmJEeM", level: "Beginner", points: 15,
     notes: [
       { type: 'key',     emoji: '🔑', text: 'Public Wi-Fi is NEVER secure — attackers can intercept everything (man-in-the-middle attacks).' },
       { type: 'warning', emoji: '⚠️', text: 'Never access banking or work accounts on public Wi-Fi without a VPN.' },
@@ -251,7 +251,7 @@ const fallbackModules: Module[] = [
   {
     id: 14, title: "Data Privacy & Personal Information",
     description: "Understand how your data is collected, sold, and exploited online.",
-    duration: "11 min", video_id: "u9x5TeuAFhk", level: "Intermediate", points: 20,
+    duration: "11 min", video_id: "N82TgjKU9yE", level: "Intermediate", points: 20,
     notes: [
       { type: 'key',     emoji: '🔑', text: 'Data brokers legally collect and sell your name, address, phone, income, and relationships.' },
       { type: 'warning', emoji: '⚠️', text: 'Free apps often sell your data — if you\'re not paying, YOU are the product.' },
@@ -267,7 +267,7 @@ const fallbackModules: Module[] = [
   {
     id: 15, title: "Mobile Device Security",
     description: "Secure your smartphone against app threats, malicious links, and unauthorized access.",
-    duration: "10 min", video_id: "aOCxEBLKhZE", level: "Beginner", points: 15,
+    duration: "10 min", video_id: "8J8z8ekeYVQ", level: "Beginner", points: 15,
     notes: [
       { type: 'key',     emoji: '🔑', text: 'Malicious apps are the #1 mobile threat — only install from official stores and check permissions.' },
       { type: 'warning', emoji: '⚠️', text: 'A flashlight app should NOT need access to contacts, microphone, or location — deny suspicious permissions.' },
@@ -283,7 +283,7 @@ const fallbackModules: Module[] = [
   {
     id: 16, title: "Deepfakes & AI-Powered Attacks",
     description: "Understand AI-generated audio/video fraud and how to verify authenticity.",
-    duration: "12 min", video_id: "gLoI9hAX9dw", level: "Advanced", points: 25,
+    duration: "12 min", video_id: "PZSQWqV36pI", level: "Advanced", points: 25,
     notes: [
       { type: 'key',     emoji: '🔑', text: 'Deepfakes can clone a person\'s voice with just 3 seconds of audio — enabling convincing phone scams.' },
       { type: 'warning', emoji: '⚠️', text: 'A UK company lost $243,000 after receiving a deepfake audio call from a fake "CEO".' },
@@ -299,7 +299,7 @@ const fallbackModules: Module[] = [
   {
     id: 17, title: "Cybersecurity for Remote Work",
     description: "Stay secure when working from home — protecting company data on personal networks.",
-    duration: "10 min", video_id: "GEKnEp4z-C8", level: "Intermediate", points: 20,
+    duration: "10 min", video_id: "Gn76M-od8SE", level: "Intermediate", points: 20,
     notes: [
       { type: 'key',     emoji: '🔑', text: 'Home networks are far less secure than corporate networks — remote workers are the weakest link.' },
       { type: 'warning', emoji: '⚠️', text: 'Never mix personal and work accounts on the same device — a personal breach can compromise company systems.' },
@@ -326,6 +326,22 @@ const fallbackModules: Module[] = [
       { question: "You suspect your email was hacked. First step:", options: ["Ignore and monitor", "Change password from a clean device immediately", "Delete your account", "Call the attacker"], correctIndex: 1 },
       { question: "Should you immediately power off a hacked device?", options: ["Yes, always", "No — preserve forensic evidence", "Yes, to stop the attack", "Only laptops"], correctIndex: 1 },
       { question: "Where to change passwords if your device is compromised?", options: ["On the compromised device", "On a trusted separate clean device", "By calling your provider", "Using safe mode"], correctIndex: 1 }
+    ]
+  },
+  {
+    id: 19, title: "Cybersecurity Awareness & Culture",
+    description: "Build a security-first mindset and understand how to create a culture of cybersecurity at work and home.",
+    duration: "12 min", video_id: "inWWhr5tnEA", level: "Beginner", points: 15,
+    notes: [
+      { type: 'key',     emoji: '🔑', text: 'Cybersecurity is 80% people and 20% technology — a security-aware culture is your strongest defense.' },
+      { type: 'warning', emoji: '⚠️', text: 'Overconfidence is dangerous — even security experts get phished. Stay skeptical of every unexpected message.' },
+      { type: 'tip',     emoji: '💡', text: 'Report suspicious emails even if you didn\'t click — your report protects everyone in your organization.' },
+      { type: 'fact',    emoji: '📊', text: 'Organizations with strong security cultures have 52% fewer cybersecurity incidents than those without.' },
+    ],
+    quiz: [
+      { question: "What is the most important factor in cybersecurity?", options: ["Expensive software", "Security-aware people and culture", "Government regulations", "Complex passwords"], correctIndex: 1 },
+      { question: "You receive a suspicious email but didn't click anything. Should you report it?", options: ["No, just delete it", "Yes, report it to IT/security team", "Only if it happens again", "Forward it to colleagues to warn them"], correctIndex: 1 },
+      { question: "Why do security breaches still happen despite good technology?", options: ["Technology is always weak", "Human error and social engineering bypass technical controls", "Hackers are always smarter", "Security tools are too expensive"], correctIndex: 1 }
     ]
   },
 ];
