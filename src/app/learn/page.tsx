@@ -345,6 +345,7 @@ export default function LearnPage() {
   const [videoError, setVideoError] = useState(false);
   const [completing, setCompleting] = useState(false);
   const playerRef = useRef<any>(null);
+  const videoContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const timeoutId = setTimeout(() => setLoading(false), 8000);
@@ -596,7 +597,7 @@ export default function LearnPage() {
           <div className="grid lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2">
               {selectedModule && (
-                <div className="bg-[#1A2332] rounded-xl border border-[#2E3A4F] overflow-hidden">
+                <div ref={videoContainerRef} className="bg-[#1A2332] rounded-xl border border-[#2E3A4F] overflow-hidden">
                   {!showQuiz ? (
                     <>
                       <div className="aspect-video bg-black relative">
@@ -857,6 +858,9 @@ export default function LearnPage() {
                     onClick={() => {
                       setSelectedModule(module);
                       handleCloseQuiz();
+                      setTimeout(() => {
+                        videoContainerRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                      }, 50);
                     }}
                     className={`w-full text-left p-4 rounded-xl border transition-all ${
                       selectedModule?.id === module.id
