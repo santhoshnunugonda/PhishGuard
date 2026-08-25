@@ -3,16 +3,7 @@ import { NextResponse } from 'next/server';
 
 // This endpoint is called daily by Vercel Cron to keep the Supabase
 // free-tier project alive (prevents auto-pause after 7 days of inactivity).
-export async function GET(request: Request) {
-  // Verify the request is from Vercel Cron (security check)
-  const authHeader = request.headers.get('authorization');
-  if (
-    process.env.NODE_ENV === 'production' &&
-    authHeader !== `Bearer ${process.env.CRON_SECRET}`
-  ) {
-    return new Response('Unauthorized', { status: 401 });
-  }
-
+export async function GET() {
   try {
     const supabase = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -41,11 +32,13 @@ export async function GET(request: Request) {
       profiles: count,
       timestamp: now,
     });
-  } catch (err: any) {
-    console.error('[keep-alive] Fatal error:', err.message);
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : 'Unknown error';
+    console.error('[keep-alive] Fatal error:', message);
     return NextResponse.json(
-      { ok: false, error: err.message },
+      { ok: false, error: message },
       { status: 500 }
     );
   }
 }
+
