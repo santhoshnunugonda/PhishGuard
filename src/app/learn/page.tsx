@@ -859,7 +859,7 @@ export default function LearnPage() {
                       setSelectedModule(module);
                       handleCloseQuiz();
                       setTimeout(() => {
-                        videoContainerRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
                       }, 50);
                     }}
                     className={`w-full text-left p-4 rounded-xl border transition-all ${
