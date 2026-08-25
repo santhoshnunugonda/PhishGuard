@@ -59,7 +59,7 @@ const fallbackModules: Module[] = [
   {
     id: 2, title: "Email Header Analysis",
     description: "Master the art of analyzing email headers to detect spoofed senders.",
-    duration: "10 min", video_id: "Y7zNhPvYBWc", level: "Beginner", points: 15,
+    duration: "10 min", video_id: "3wwaYc_Yuhc", level: "Beginner", points: 15,
     notes: [
       { type: 'key',     emoji: '🔑', text: 'The "From" display name can be anything — only the email domain in angle brackets <> is the real sender.' },
       { type: 'warning', emoji: '⚠️', text: 'Mismatch between "From" and "Return-Path" is a strong indicator of email spoofing.' },
@@ -75,7 +75,7 @@ const fallbackModules: Module[] = [
   {
     id: 3, title: "Spear Phishing & Targeted Attacks",
     description: "Understand how attackers research victims and craft highly personalized phishing emails.",
-    duration: "12 min", video_id: "aO7yBdMDyrc", level: "Intermediate", points: 20,
+    duration: "12 min", video_id: "BhGWnSeNXq0", level: "Intermediate", points: 20,
     notes: [
       { type: 'key',     emoji: '🔑', text: 'Spear phishing uses your name, job, and colleagues to appear legitimate — 3x more effective than generic phishing.' },
       { type: 'warning', emoji: '⚠️', text: 'LinkedIn, Facebook, and your company website are goldmines for attackers researching you.' },
@@ -91,7 +91,7 @@ const fallbackModules: Module[] = [
   {
     id: 4, title: "Smishing — SMS Phishing",
     description: "Recognize fraudulent text messages designed to steal credentials or install malware.",
-    duration: "7 min", video_id: "wVlBlv1O0Ek", level: "Beginner", points: 15,
+    duration: "7 min", video_id: "sHRS7pbBHcQ", level: "Beginner", points: 15,
     notes: [
       { type: 'key',     emoji: '🔑', text: 'Smishing texts impersonate banks, delivery services (FedEx, DHL), or government agencies.' },
       { type: 'warning', emoji: '⚠️', text: 'Never click links in unsolicited texts — go directly to the official app or website instead.' },
@@ -107,7 +107,7 @@ const fallbackModules: Module[] = [
   {
     id: 5, title: "Vishing — Voice Phishing",
     description: "Learn how phone call scams work and how to handle suspicious callers confidently.",
-    duration: "9 min", video_id: "Y4owNMEouMQ", level: "Beginner", points: 15,
+    duration: "9 min", video_id: "SBBx-m6U_Qs", level: "Beginner", points: 15,
     notes: [
       { type: 'key',     emoji: '🔑', text: 'Vishing attackers impersonate tech support (Microsoft, Apple), banks, or government officials.' },
       { type: 'warning', emoji: '⚠️', text: 'Caller ID can be SPOOFED — a call from your bank\'s number may not be real.' },
@@ -123,7 +123,7 @@ const fallbackModules: Module[] = [
   {
     id: 6, title: "QR Code Phishing (Quishing)",
     description: "Discover how attackers embed malicious URLs in QR codes to bypass email security.",
-    duration: "8 min", video_id: "2WpGHRwYpxQ", level: "Intermediate", points: 20,
+    duration: "8 min", video_id: "v4jJdmQpHPg", level: "Intermediate", points: 20,
     notes: [
       { type: 'key',     emoji: '🔑', text: 'QR codes hide URLs — you can\'t see the destination before scanning, making them ideal for bypassing security tools.' },
       { type: 'warning', emoji: '⚠️', text: 'Attackers place fake QR codes over real ones in restaurants, parking meters, and offices.' },
@@ -139,7 +139,7 @@ const fallbackModules: Module[] = [
   {
     id: 7, title: "Social Engineering Tactics",
     description: "Explore the psychological manipulation techniques attackers use to deceive people.",
-    duration: "15 min", video_id: "lc7scxvKQOo", level: "Intermediate", points: 20,
+    duration: "15 min", video_id: "YmGwdoS706M", level: "Intermediate", points: 20,
     notes: [
       { type: 'key',     emoji: '🔑', text: 'Social engineering exploits human psychology — trust, fear, authority — not technical vulnerabilities.' },
       { type: 'warning', emoji: '⚠️', text: 'Pretexting: attackers create fake scenarios ("I\'m from IT, need your password") to gain trust.' },
@@ -155,7 +155,7 @@ const fallbackModules: Module[] = [
   {
     id: 8, title: "Password Security & Best Practices",
     description: "Build strong password habits and understand why password managers are essential.",
-    duration: "10 min", video_id: "aEmXoVrMsS0", level: "Beginner", points: 15,
+    duration: "10 min", video_id: "CNMKuqb3xFk", level: "Beginner", points: 15,
     notes: [
       { type: 'key',     emoji: '🔑', text: 'A 12-character password takes 34,000 years to crack — an 8-character one takes 8 hours.' },
       { type: 'warning', emoji: '⚠️', text: 'Password reuse is dangerous — if one site is breached, attackers try your credentials everywhere (credential stuffing).' },
@@ -171,7 +171,7 @@ const fallbackModules: Module[] = [
   {
     id: 9, title: "Two-Factor Authentication (2FA)",
     description: "Understand why 2FA is critical and how to set it up properly for maximum security.",
-    duration: "8 min", video_id: "0mvCeX_aknE", level: "Beginner", points: 15,
+    duration: "8 min", video_id: "L3alw3iXaio", level: "Beginner", points: 15,
     notes: [
       { type: 'key',     emoji: '🔑', text: '2FA blocks 99.9% of automated account hacking attempts — even if your password is stolen.' },
       { type: 'warning', emoji: '⚠️', text: 'SMS-based 2FA is the weakest form — SIM swapping attacks can intercept text messages.' },
@@ -187,7 +187,7 @@ const fallbackModules: Module[] = [
   {
     id: 10, title: "Spotting Fake Websites",
     description: "Learn to identify cloned websites, typosquatting domains, and fake login pages.",
-    duration: "11 min", video_id: "I61MQkMQXH0", level: "Beginner", points: 15,
+    duration: "11 min", video_id: "MBkqfWkIi5w", level: "Beginner", points: 15,
     notes: [
       { type: 'key',     emoji: '🔑', text: 'Fake sites use typosquatting: paypa1.com, g00gle.com — always check domain spelling carefully.' },
       { type: 'warning', emoji: '⚠️', text: 'HTTPS and the padlock do NOT mean safe — phishing sites also use HTTPS. It only means encrypted.' },
@@ -203,7 +203,7 @@ const fallbackModules: Module[] = [
   {
     id: 11, title: "Business Email Compromise (BEC)",
     description: "Understand how BEC attacks target organizations and cost billions in wire fraud.",
-    duration: "13 min", video_id: "4QXJgmNtYko", level: "Advanced", points: 25,
+    duration: "13 min", video_id: "CrcvvJCOSG0", level: "Advanced", points: 25,
     notes: [
       { type: 'key',     emoji: '🔑', text: 'BEC is the most financially damaging cybercrime — costing $2.9 billion in 2023 (FBI).' },
       { type: 'warning', emoji: '⚠️', text: 'Attackers monitor emails for weeks before sending a fake CEO wire transfer request at the perfect moment.' },
@@ -219,7 +219,7 @@ const fallbackModules: Module[] = [
   {
     id: 12, title: "Ransomware — How to Stay Protected",
     description: "Learn how ransomware spreads, what to do if infected, and how to prevent attacks.",
-    duration: "14 min", video_id: "WqD-ATqw3js", level: "Intermediate", points: 20,
+    duration: "14 min", video_id: "lIsWpCMBxHQ", level: "Intermediate", points: 20,
     notes: [
       { type: 'key',     emoji: '🔑', text: 'Ransomware encrypts ALL your files and demands payment (usually Bitcoin) to unlock them.' },
       { type: 'warning', emoji: '⚠️', text: 'NEVER pay the ransom — payment doesn\'t guarantee file recovery and encourages more attacks.' },
@@ -235,7 +235,7 @@ const fallbackModules: Module[] = [
   {
     id: 13, title: "Safe Browsing & Public Wi-Fi",
     description: "Protect yourself online with safe browsing habits and VPN usage on public networks.",
-    duration: "9 min", video_id: "R-JUOpCgTZc", level: "Beginner", points: 15,
+    duration: "9 min", video_id: "_wQTRMBAvzg", level: "Beginner", points: 15,
     notes: [
       { type: 'key',     emoji: '🔑', text: 'Public Wi-Fi is NEVER secure — attackers can intercept everything (man-in-the-middle attacks).' },
       { type: 'warning', emoji: '⚠️', text: 'Never access banking or work accounts on public Wi-Fi without a VPN.' },
@@ -251,7 +251,7 @@ const fallbackModules: Module[] = [
   {
     id: 14, title: "Data Privacy & Personal Information",
     description: "Understand how your data is collected, sold, and exploited online.",
-    duration: "11 min", video_id: "cfp8Ck5TFMQ", level: "Intermediate", points: 20,
+    duration: "11 min", video_id: "u9x5TeuAFhk", level: "Intermediate", points: 20,
     notes: [
       { type: 'key',     emoji: '🔑', text: 'Data brokers legally collect and sell your name, address, phone, income, and relationships.' },
       { type: 'warning', emoji: '⚠️', text: 'Free apps often sell your data — if you\'re not paying, YOU are the product.' },
@@ -267,7 +267,7 @@ const fallbackModules: Module[] = [
   {
     id: 15, title: "Mobile Device Security",
     description: "Secure your smartphone against app threats, malicious links, and unauthorized access.",
-    duration: "10 min", video_id: "TnFuFKfCUwI", level: "Beginner", points: 15,
+    duration: "10 min", video_id: "aOCxEBLKhZE", level: "Beginner", points: 15,
     notes: [
       { type: 'key',     emoji: '🔑', text: 'Malicious apps are the #1 mobile threat — only install from official stores and check permissions.' },
       { type: 'warning', emoji: '⚠️', text: 'A flashlight app should NOT need access to contacts, microphone, or location — deny suspicious permissions.' },
@@ -283,7 +283,7 @@ const fallbackModules: Module[] = [
   {
     id: 16, title: "Deepfakes & AI-Powered Attacks",
     description: "Understand AI-generated audio/video fraud and how to verify authenticity.",
-    duration: "12 min", video_id: "cQ54GDm1eL0", level: "Advanced", points: 25,
+    duration: "12 min", video_id: "gLoI9hAX9dw", level: "Advanced", points: 25,
     notes: [
       { type: 'key',     emoji: '🔑', text: 'Deepfakes can clone a person\'s voice with just 3 seconds of audio — enabling convincing phone scams.' },
       { type: 'warning', emoji: '⚠️', text: 'A UK company lost $243,000 after receiving a deepfake audio call from a fake "CEO".' },
@@ -299,7 +299,7 @@ const fallbackModules: Module[] = [
   {
     id: 17, title: "Cybersecurity for Remote Work",
     description: "Stay secure when working from home — protecting company data on personal networks.",
-    duration: "10 min", video_id: "JH6uFnH2tg4", level: "Intermediate", points: 20,
+    duration: "10 min", video_id: "GEKnEp4z-C8", level: "Intermediate", points: 20,
     notes: [
       { type: 'key',     emoji: '🔑', text: 'Home networks are far less secure than corporate networks — remote workers are the weakest link.' },
       { type: 'warning', emoji: '⚠️', text: 'Never mix personal and work accounts on the same device — a personal breach can compromise company systems.' },
@@ -315,7 +315,7 @@ const fallbackModules: Module[] = [
   {
     id: 18, title: "Incident Response — What to Do When Hacked",
     description: "Learn the immediate steps to take if you suspect your accounts or device are compromised.",
-    duration: "11 min", video_id: "WjV52HXUUYY", level: "Advanced", points: 25,
+    duration: "11 min", video_id: "cMXPFbW0QEk", level: "Advanced", points: 25,
     notes: [
       { type: 'key',     emoji: '🔑', text: 'The first 60 minutes after discovering a breach are critical — fast action limits the damage.' },
       { type: 'warning', emoji: '⚠️', text: 'Do NOT power off the device immediately — this can destroy forensic evidence needed to understand the attack.' },
@@ -342,6 +342,7 @@ export default function LearnPage() {
   const [showQuizResult, setShowQuizResult] = useState(false);
   const [quizCompleted, setQuizCompleted] = useState(false);
   const [videoFinished, setVideoFinished] = useState(false);
+  const [videoError, setVideoError] = useState(false);
   const [completing, setCompleting] = useState(false);
   const playerRef = useRef<any>(null);
 
@@ -431,6 +432,7 @@ export default function LearnPage() {
     if (playerRef.current) {
       playerRef.current.destroy();
     }
+    setVideoError(false);
 
     playerRef.current = new window.YT.Player('youtube-player', {
       videoId: selectedModule.video_id,
@@ -444,6 +446,9 @@ export default function LearnPage() {
           if (event.data === window.YT.PlayerState.ENDED) {
             setVideoFinished(true);
           }
+        },
+        onError: () => {
+          setVideoError(true);
         },
       },
     });
@@ -595,9 +600,37 @@ export default function LearnPage() {
                   {!showQuiz ? (
                     <>
                       <div className="aspect-video bg-black relative">
-                        <div id="youtube-player" className="w-full h-full" />
-                        
-                        {videoFinished && !completedModules.includes(selectedModule.id) && (
+                        <div id="youtube-player" className={`w-full h-full ${videoError ? 'hidden' : ''}`} />
+
+                        {/* Video unavailable fallback */}
+                        {videoError && (
+                          <div className="absolute inset-0 bg-[#0D1B2A] flex flex-col items-center justify-center p-6 text-center">
+                            <div className="w-16 h-16 bg-[#FF4D4D]/20 rounded-full flex items-center justify-center mb-4">
+                              <span className="text-3xl">📺</span>
+                            </div>
+                            <h3 className="text-lg font-bold text-white mb-2">Video Unavailable</h3>
+                            <p className="text-[#B8BCCF] text-sm mb-5 max-w-xs">
+                              This video isn't available in the embed player. Watch it directly on YouTube instead.
+                            </p>
+                            <a
+                              href={`https://www.youtube.com/results?search_query=${encodeURIComponent(selectedModule.title + ' cybersecurity tutorial')}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="px-6 py-2.5 bg-[#FF0000] text-white font-bold rounded-lg hover:bg-[#cc0000] transition-all flex items-center gap-2 mb-3"
+                            >
+                              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                              Search on YouTube
+                            </a>
+                            <button
+                              onClick={handleStartQuiz}
+                              className="text-[#C0FF00] text-sm underline hover:text-white transition-colors"
+                            >
+                              Skip to Quiz →
+                            </button>
+                          </div>
+                        )}
+
+                        {videoFinished && !completedModules.includes(selectedModule.id) && !videoError && (
                           <div className="absolute inset-0 bg-[#0D1B2A]/90 backdrop-blur-sm flex flex-col items-center justify-center p-6 text-center animate-in fade-in duration-500">
                             <div className="w-16 h-16 bg-[#C0FF00] rounded-full flex items-center justify-center mb-4 shadow-[0_0_20px_rgba(192,255,0,0.4)]">
                               <PlayCircle className="w-10 h-10 text-[#0D1B2A]" />
