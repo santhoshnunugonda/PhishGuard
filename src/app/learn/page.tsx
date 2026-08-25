@@ -21,6 +21,12 @@ type Quiz = {
   correctIndex: number;
 };
 
+type NoteBlock = {
+  type: 'key' | 'warning' | 'tip' | 'info' | 'fact';
+  emoji: string;
+  text: string;
+};
+
 type Module = {
   id: number | string;
   title: string;
@@ -30,17 +36,20 @@ type Module = {
   level: string;
   points: number;
   quiz: Quiz[];
+  notes?: NoteBlock[];
 };
 
 const fallbackModules: Module[] = [
   {
-    id: 1,
-    title: "Phishing Fundamentals",
+    id: 1, title: "Phishing Fundamentals",
     description: "Learn what phishing is, why it matters, and the psychology behind attacks.",
-    duration: "8 min",
-    video_id: "XBkzBrXlle0",
-    level: "Beginner",
-    points: 15,
+    duration: "8 min", video_id: "XBkzBrXlle0", level: "Beginner", points: 15,
+    notes: [
+      { type: 'key',     emoji: '🔑', text: 'Phishing is the #1 cause of data breaches — over 90% of attacks start with a phishing email.' },
+      { type: 'warning', emoji: '⚠️', text: 'Attackers exploit URGENCY — phrases like "Act Now" or "Your account is suspended" are red flags.' },
+      { type: 'tip',     emoji: '💡', text: 'Always hover over links before clicking to see the real destination URL.' },
+      { type: 'fact',    emoji: '📊', text: 'The average phishing attack costs a company $1.6 million in damages.' },
+    ],
     quiz: [
       { question: "What is the primary goal of a phishing attack?", options: ["To improve email security", "To steal sensitive information", "To send marketing emails", "To test network speed"], correctIndex: 1 },
       { question: "Which is a common psychological tactic used in phishing?", options: ["Creating urgency", "Providing receipts", "Using letterheads", "Sending attachments"], correctIndex: 0 },
@@ -48,19 +57,277 @@ const fallbackModules: Module[] = [
     ]
   },
   {
-    id: 2,
-    title: "Email Header Analysis",
+    id: 2, title: "Email Header Analysis",
     description: "Master the art of analyzing email headers to detect spoofed senders.",
-    duration: "10 min",
-    video_id: "Y7zNhPvYBWc",
-    level: "Beginner",
-    points: 15,
+    duration: "10 min", video_id: "Y7zNhPvYBWc", level: "Beginner", points: 15,
+    notes: [
+      { type: 'key',     emoji: '🔑', text: 'The "From" display name can be anything — only the email domain in angle brackets <> is the real sender.' },
+      { type: 'warning', emoji: '⚠️', text: 'Mismatch between "From" and "Return-Path" is a strong indicator of email spoofing.' },
+      { type: 'tip',     emoji: '💡', text: 'Use mail-tester.com or Google Admin Toolbox to inspect full email headers for free.' },
+      { type: 'info',    emoji: 'ℹ️', text: 'SPF, DKIM, and DMARC are email authentication protocols that help prevent spoofing.' },
+    ],
     quiz: [
       { question: "What does the 'From' field actually indicate?", options: ["Verified sender", "Display name (can be spoofed)", "Server IP", "Encryption status"], correctIndex: 1 },
       { question: "Which field shows the email's path?", options: ["Subject", "Received", "Reply-To", "Content-Type"], correctIndex: 1 },
       { question: "From/Return-Path mismatch often indicates:", options: ["Legitimate email", "Phishing attempt", "Encrypted message", "High priority"], correctIndex: 1 }
     ]
-  }
+  },
+  {
+    id: 3, title: "Spear Phishing & Targeted Attacks",
+    description: "Understand how attackers research victims and craft highly personalized phishing emails.",
+    duration: "12 min", video_id: "aO7yBdMDyrc", level: "Intermediate", points: 20,
+    notes: [
+      { type: 'key',     emoji: '🔑', text: 'Spear phishing uses your name, job, and colleagues to appear legitimate — 3x more effective than generic phishing.' },
+      { type: 'warning', emoji: '⚠️', text: 'LinkedIn, Facebook, and your company website are goldmines for attackers researching you.' },
+      { type: 'tip',     emoji: '💡', text: 'Be cautious of unsolicited emails referencing specific project names — attackers do their research.' },
+      { type: 'fact',    emoji: '📊', text: '91% of all cyberattacks begin with a spear phishing email targeting specific individuals.' },
+    ],
+    quiz: [
+      { question: "What makes spear phishing different?", options: ["Uses phone calls", "Targets specific individuals with personal info", "Only targets companies", "Uses malware files"], correctIndex: 1 },
+      { question: "Where do spear phishers gather info?", options: ["Dark web only", "Social media and LinkedIn", "Company intranets", "Phone directories"], correctIndex: 1 },
+      { question: "Best defense against spear phishing?", options: ["Antivirus software", "Awareness training and verification", "Spam filters", "VPN"], correctIndex: 1 }
+    ]
+  },
+  {
+    id: 4, title: "Smishing — SMS Phishing",
+    description: "Recognize fraudulent text messages designed to steal credentials or install malware.",
+    duration: "7 min", video_id: "wVlBlv1O0Ek", level: "Beginner", points: 15,
+    notes: [
+      { type: 'key',     emoji: '🔑', text: 'Smishing texts impersonate banks, delivery services (FedEx, DHL), or government agencies.' },
+      { type: 'warning', emoji: '⚠️', text: 'Never click links in unsolicited texts — go directly to the official app or website instead.' },
+      { type: 'tip',     emoji: '💡', text: 'Real banks NEVER ask for your PIN, OTP, or password via SMS — these are always scams.' },
+      { type: 'info',    emoji: 'ℹ️', text: 'SMS phishing is growing 328% year-over-year as attackers shift from email to mobile.' },
+    ],
+    quiz: [
+      { question: "What is smishing?", options: ["Email phishing", "Phishing via SMS/text messages", "Voice phishing", "QR code attacks"], correctIndex: 1 },
+      { question: "A text says your package is held, click to reschedule. What do you do?", options: ["Click the link", "Go to the official courier website directly", "Reply with your address", "Forward to friends"], correctIndex: 1 },
+      { question: "Which is a common smishing red flag?", options: ["Message from a contact", "Unknown number with urgent link", "Official app notification", "Verified sender badge"], correctIndex: 1 }
+    ]
+  },
+  {
+    id: 5, title: "Vishing — Voice Phishing",
+    description: "Learn how phone call scams work and how to handle suspicious callers confidently.",
+    duration: "9 min", video_id: "Y4owNMEouMQ", level: "Beginner", points: 15,
+    notes: [
+      { type: 'key',     emoji: '🔑', text: 'Vishing attackers impersonate tech support (Microsoft, Apple), banks, or government officials.' },
+      { type: 'warning', emoji: '⚠️', text: 'Caller ID can be SPOOFED — a call from your bank\'s number may not be real.' },
+      { type: 'tip',     emoji: '💡', text: 'If suspicious, hang up and call the organization back using the official number from their website.' },
+      { type: 'fact',    emoji: '📊', text: 'Americans lose over $10 billion annually to phone scams.' },
+    ],
+    quiz: [
+      { question: "What is vishing?", options: ["Video phishing", "Voice/phone call phishing", "Visual hacking", "VPN attacks"], correctIndex: 1 },
+      { question: "A caller claims to be Microsoft and says your PC has a virus. What do you do?", options: ["Give remote access", "Pay their fee", "Hang up and call Microsoft directly", "Install their software"], correctIndex: 2 },
+      { question: "Can caller ID be faked?", options: ["No, it's always accurate", "Yes, caller ID spoofing is common", "Only on mobile", "Only internationally"], correctIndex: 1 }
+    ]
+  },
+  {
+    id: 6, title: "QR Code Phishing (Quishing)",
+    description: "Discover how attackers embed malicious URLs in QR codes to bypass email security.",
+    duration: "8 min", video_id: "2WpGHRwYpxQ", level: "Intermediate", points: 20,
+    notes: [
+      { type: 'key',     emoji: '🔑', text: 'QR codes hide URLs — you can\'t see the destination before scanning, making them ideal for bypassing security tools.' },
+      { type: 'warning', emoji: '⚠️', text: 'Attackers place fake QR codes over real ones in restaurants, parking meters, and offices.' },
+      { type: 'tip',     emoji: '💡', text: 'Use a QR scanner that shows the URL BEFORE opening it, and always check the domain.' },
+      { type: 'info',    emoji: 'ℹ️', text: 'Quishing attacks increased 587% in the second half of 2023.' },
+    ],
+    quiz: [
+      { question: "Why are QR codes risky for phishing?", options: ["They expire quickly", "The URL is hidden until scanned", "Only work on iPhone", "Use Bluetooth"], correctIndex: 1 },
+      { question: "A QR code at a restaurant asks for your credit card. What do you do?", options: ["Enter payment info", "Close and ask staff for a printed menu", "Take a screenshot", "Share with friends"], correctIndex: 1 },
+      { question: "What does 'Quishing' mean?", options: ["Quick phishing", "QR code phishing", "Quantum phishing", "Queue phishing"], correctIndex: 1 }
+    ]
+  },
+  {
+    id: 7, title: "Social Engineering Tactics",
+    description: "Explore the psychological manipulation techniques attackers use to deceive people.",
+    duration: "15 min", video_id: "lc7scxvKQOo", level: "Intermediate", points: 20,
+    notes: [
+      { type: 'key',     emoji: '🔑', text: 'Social engineering exploits human psychology — trust, fear, authority — not technical vulnerabilities.' },
+      { type: 'warning', emoji: '⚠️', text: 'Pretexting: attackers create fake scenarios ("I\'m from IT, need your password") to gain trust.' },
+      { type: 'tip',     emoji: '💡', text: 'Verify the person\'s identity through a separate trusted channel before sharing anything.' },
+      { type: 'fact',    emoji: '📊', text: 'Kevin Mitnick said 80% of his hacks relied on social engineering, not code.' },
+    ],
+    quiz: [
+      { question: "Social engineering primarily exploits:", options: ["Software bugs", "Network weaknesses", "Human psychology", "Hardware flaws"], correctIndex: 2 },
+      { question: "IT calls asking for your password to fix your account. What do you do?", options: ["Provide the password", "Verify identity through official channels first", "Email the password", "Give a hint"], correctIndex: 1 },
+      { question: "Which tactic involves creating a fabricated scenario?", options: ["Tailgating", "Pretexting", "Baiting", "Dumpster diving"], correctIndex: 1 }
+    ]
+  },
+  {
+    id: 8, title: "Password Security & Best Practices",
+    description: "Build strong password habits and understand why password managers are essential.",
+    duration: "10 min", video_id: "aEmXoVrMsS0", level: "Beginner", points: 15,
+    notes: [
+      { type: 'key',     emoji: '🔑', text: 'A 12-character password takes 34,000 years to crack — an 8-character one takes 8 hours.' },
+      { type: 'warning', emoji: '⚠️', text: 'Password reuse is dangerous — if one site is breached, attackers try your credentials everywhere (credential stuffing).' },
+      { type: 'tip',     emoji: '💡', text: 'Use a password manager (Bitwarden is free) to generate and store unique 20+ character passwords.' },
+      { type: 'info',    emoji: 'ℹ️', text: 'Check haveibeenpwned.com to see if your email has been in a known data breach.' },
+    ],
+    quiz: [
+      { question: "Which password is strongest?", options: ["Password123", "MyDog2023!", "Tr#9kL!mN$vQ2p", "qwerty"], correctIndex: 2 },
+      { question: "What is credential stuffing?", options: ["Adding characters to passwords", "Using breached passwords on other sites", "Encrypting passwords", "Sharing passwords"], correctIndex: 1 },
+      { question: "Best way to manage many strong passwords?", options: ["Write in a notebook", "Use the same password", "Use a password manager", "Use your birthdate"], correctIndex: 2 }
+    ]
+  },
+  {
+    id: 9, title: "Two-Factor Authentication (2FA)",
+    description: "Understand why 2FA is critical and how to set it up properly for maximum security.",
+    duration: "8 min", video_id: "0mvCeX_aknE", level: "Beginner", points: 15,
+    notes: [
+      { type: 'key',     emoji: '🔑', text: '2FA blocks 99.9% of automated account hacking attempts — even if your password is stolen.' },
+      { type: 'warning', emoji: '⚠️', text: 'SMS-based 2FA is the weakest form — SIM swapping attacks can intercept text messages.' },
+      { type: 'tip',     emoji: '💡', text: 'Use an authenticator app (Google Authenticator, Authy) or hardware key (YubiKey) for maximum security.' },
+      { type: 'info',    emoji: 'ℹ️', text: 'Enable 2FA on email, banking, social media, and any account with personal or financial data first.' },
+    ],
+    quiz: [
+      { question: "What does 2FA add to login?", options: ["A second password", "A second verification factor", "A CAPTCHA", "An email confirmation"], correctIndex: 1 },
+      { question: "Which 2FA method is LEAST secure?", options: ["Hardware key", "Authenticator app", "SMS text message", "Biometric"], correctIndex: 2 },
+      { question: "2FA blocks what percentage of automated attacks?", options: ["50%", "75%", "99.9%", "60%"], correctIndex: 2 }
+    ]
+  },
+  {
+    id: 10, title: "Spotting Fake Websites",
+    description: "Learn to identify cloned websites, typosquatting domains, and fake login pages.",
+    duration: "11 min", video_id: "I61MQkMQXH0", level: "Beginner", points: 15,
+    notes: [
+      { type: 'key',     emoji: '🔑', text: 'Fake sites use typosquatting: paypa1.com, g00gle.com — always check domain spelling carefully.' },
+      { type: 'warning', emoji: '⚠️', text: 'HTTPS and the padlock do NOT mean safe — phishing sites also use HTTPS. It only means encrypted.' },
+      { type: 'tip',     emoji: '💡', text: 'Bookmark important banking and email sites — this eliminates typosquatting risk completely.' },
+      { type: 'info',    emoji: 'ℹ️', text: 'Use Google Safe Browsing checker to report phishing sites: google.com/safebrowsing/report_phish' },
+    ],
+    quiz: [
+      { question: "What is typosquatting?", options: ["Typing fast", "Registering misspelled domains to trick users", "Squatting in server rooms", "A form of malware"], correctIndex: 1 },
+      { question: "Does HTTPS guarantee a website is safe?", options: ["Yes, always", "No, phishing sites also use HTTPS", "Only on .com domains", "Yes, if there's a padlock"], correctIndex: 1 },
+      { question: "Best way to avoid fake website attacks:", options: ["Check website color", "Bookmark official sites", "Look for lots of content", "Check loading speed"], correctIndex: 1 }
+    ]
+  },
+  {
+    id: 11, title: "Business Email Compromise (BEC)",
+    description: "Understand how BEC attacks target organizations and cost billions in wire fraud.",
+    duration: "13 min", video_id: "4QXJgmNtYko", level: "Advanced", points: 25,
+    notes: [
+      { type: 'key',     emoji: '🔑', text: 'BEC is the most financially damaging cybercrime — costing $2.9 billion in 2023 (FBI).' },
+      { type: 'warning', emoji: '⚠️', text: 'Attackers monitor emails for weeks before sending a fake CEO wire transfer request at the perfect moment.' },
+      { type: 'tip',     emoji: '💡', text: 'Always verify wire transfers via PHONE CALL to a known number — never by replying to email.' },
+      { type: 'fact',    emoji: '📊', text: 'The average BEC loss per incident is $120,000 — most victims never recover the funds.' },
+    ],
+    quiz: [
+      { question: "BEC stands for:", options: ["Basic Email Check", "Business Email Compromise", "Bulk Email Campaign", "Browser Extension Control"], correctIndex: 1 },
+      { question: "Your CEO emails requesting a $50,000 urgent wire transfer. What do you do?", options: ["Transfer immediately", "Reply asking for confirmation", "Call the CEO using a known number", "Email the CFO"], correctIndex: 2 },
+      { question: "What makes BEC attacks hard to detect?", options: ["They use viruses", "They use legitimate-looking context", "They come from unknown senders", "They contain obvious errors"], correctIndex: 1 }
+    ]
+  },
+  {
+    id: 12, title: "Ransomware — How to Stay Protected",
+    description: "Learn how ransomware spreads, what to do if infected, and how to prevent attacks.",
+    duration: "14 min", video_id: "WqD-ATqw3js", level: "Intermediate", points: 20,
+    notes: [
+      { type: 'key',     emoji: '🔑', text: 'Ransomware encrypts ALL your files and demands payment (usually Bitcoin) to unlock them.' },
+      { type: 'warning', emoji: '⚠️', text: 'NEVER pay the ransom — payment doesn\'t guarantee file recovery and encourages more attacks.' },
+      { type: 'tip',     emoji: '💡', text: 'Follow the 3-2-1 rule: 3 copies of data, on 2 media types, with 1 offsite/cloud backup.' },
+      { type: 'info',    emoji: 'ℹ️', text: 'Most ransomware spreads via phishing emails — phishing awareness IS ransomware prevention.' },
+    ],
+    quiz: [
+      { question: "What does ransomware do?", options: ["Deletes files", "Encrypts files and demands payment", "Sends files to attackers", "Corrupts files permanently"], correctIndex: 1 },
+      { question: "Should you pay the ransom?", options: ["Yes, always", "Only for important files", "No — it doesn't guarantee recovery", "Yes if you have Bitcoin"], correctIndex: 2 },
+      { question: "Best protection against ransomware:", options: ["Antivirus only", "Regular backups + phishing awareness", "Paying quickly", "Disconnecting from internet"], correctIndex: 1 }
+    ]
+  },
+  {
+    id: 13, title: "Safe Browsing & Public Wi-Fi",
+    description: "Protect yourself online with safe browsing habits and VPN usage on public networks.",
+    duration: "9 min", video_id: "R-JUOpCgTZc", level: "Beginner", points: 15,
+    notes: [
+      { type: 'key',     emoji: '🔑', text: 'Public Wi-Fi is NEVER secure — attackers can intercept everything (man-in-the-middle attacks).' },
+      { type: 'warning', emoji: '⚠️', text: 'Never access banking or work accounts on public Wi-Fi without a VPN.' },
+      { type: 'tip',     emoji: '💡', text: 'Use ProtonVPN (free tier) when on public networks in coffee shops, airports, or hotels.' },
+      { type: 'info',    emoji: 'ℹ️', text: 'uBlock Origin browser extension blocks ads, trackers, and malicious scripts — install it today.' },
+    ],
+    quiz: [
+      { question: "Why is public Wi-Fi dangerous?", options: ["It's slow", "Attackers can intercept your traffic", "Uses too much battery", "It's unreliable"], correctIndex: 1 },
+      { question: "What does a VPN do?", options: ["Speeds up internet", "Encrypts traffic and hides your IP", "Blocks all ads", "Scans for viruses"], correctIndex: 1 },
+      { question: "Which activity is SAFE on public Wi-Fi without VPN?", options: ["Online banking", "Reading public news websites", "Logging into work email", "Shopping with credit card"], correctIndex: 1 }
+    ]
+  },
+  {
+    id: 14, title: "Data Privacy & Personal Information",
+    description: "Understand how your data is collected, sold, and exploited online.",
+    duration: "11 min", video_id: "cfp8Ck5TFMQ", level: "Intermediate", points: 20,
+    notes: [
+      { type: 'key',     emoji: '🔑', text: 'Data brokers legally collect and sell your name, address, phone, income, and relationships.' },
+      { type: 'warning', emoji: '⚠️', text: 'Free apps often sell your data — if you\'re not paying, YOU are the product.' },
+      { type: 'tip',     emoji: '💡', text: 'Use unique email aliases per site (SimpleLogin is free) to track who sold your data.' },
+      { type: 'fact',    emoji: '📊', text: 'Your data is sold to 20+ data brokers on average — you can opt out at DeleteMe.' },
+    ],
+    quiz: [
+      { question: "What is a data broker?", options: ["A bank employee", "Company that collects and sells personal data", "A cybersecurity expert", "An email provider"], correctIndex: 1 },
+      { question: "Why are free apps risky for privacy?", options: ["They have bugs", "They monetize by selling user data", "They use too much data", "They crash frequently"], correctIndex: 1 },
+      { question: "Best way to limit data exposure:", options: ["Use only paid apps", "Minimize permissions and use email aliases", "Never use smartphones", "Use only offline software"], correctIndex: 1 }
+    ]
+  },
+  {
+    id: 15, title: "Mobile Device Security",
+    description: "Secure your smartphone against app threats, malicious links, and unauthorized access.",
+    duration: "10 min", video_id: "TnFuFKfCUwI", level: "Beginner", points: 15,
+    notes: [
+      { type: 'key',     emoji: '🔑', text: 'Malicious apps are the #1 mobile threat — only install from official stores and check permissions.' },
+      { type: 'warning', emoji: '⚠️', text: 'A flashlight app should NOT need access to contacts, microphone, or location — deny suspicious permissions.' },
+      { type: 'tip',     emoji: '💡', text: 'Enable device encryption, use a strong PIN, and set screen lock to 30 seconds.' },
+      { type: 'info',    emoji: 'ℹ️', text: 'Keep your OS updated — security patches fix vulnerabilities attackers actively exploit.' },
+    ],
+    quiz: [
+      { question: "A calculator app requests contacts access. What should you do?", options: ["Allow it", "Deny — it doesn't need contacts", "Uninstall your calculator", "Grant all permissions"], correctIndex: 1 },
+      { question: "Where should you ONLY install apps from?", options: ["Any website", "Official app stores", "Email attachments", "SMS links"], correctIndex: 1 },
+      { question: "Why are OS updates important for security?", options: ["Add new features", "Fix security vulnerabilities", "Improve battery", "Required by law"], correctIndex: 1 }
+    ]
+  },
+  {
+    id: 16, title: "Deepfakes & AI-Powered Attacks",
+    description: "Understand AI-generated audio/video fraud and how to verify authenticity.",
+    duration: "12 min", video_id: "cQ54GDm1eL0", level: "Advanced", points: 25,
+    notes: [
+      { type: 'key',     emoji: '🔑', text: 'Deepfakes can clone a person\'s voice with just 3 seconds of audio — enabling convincing phone scams.' },
+      { type: 'warning', emoji: '⚠️', text: 'A UK company lost $243,000 after receiving a deepfake audio call from a fake "CEO".' },
+      { type: 'tip',     emoji: '💡', text: 'Establish a secret code word with family/colleagues to verify identity for unusual voice requests.' },
+      { type: 'fact',    emoji: '📊', text: 'Deepfake videos increased 900% from 2023 to 2024 — AI makes social engineering more convincing.' },
+    ],
+    quiz: [
+      { question: "What is a deepfake?", options: ["A fake social media profile", "AI-generated synthetic media", "A type of malware", "A VPN protocol"], correctIndex: 1 },
+      { question: "A voice call sounds exactly like your CEO asking for an urgent transfer. What do you do?", options: ["Transfer immediately", "Verify via a separate known channel", "Record the call", "Ask for email confirmation"], correctIndex: 1 },
+      { question: "How little audio is needed to clone a voice today?", options: ["30 minutes", "5 minutes", "As little as 3 seconds", "Only studio quality works"], correctIndex: 2 }
+    ]
+  },
+  {
+    id: 17, title: "Cybersecurity for Remote Work",
+    description: "Stay secure when working from home — protecting company data on personal networks.",
+    duration: "10 min", video_id: "JH6uFnH2tg4", level: "Intermediate", points: 20,
+    notes: [
+      { type: 'key',     emoji: '🔑', text: 'Home networks are far less secure than corporate networks — remote workers are the weakest link.' },
+      { type: 'warning', emoji: '⚠️', text: 'Never mix personal and work accounts on the same device — a personal breach can compromise company systems.' },
+      { type: 'tip',     emoji: '💡', text: 'Always use your company VPN when accessing work resources, and lock your screen when walking away.' },
+      { type: 'info',    emoji: 'ℹ️', text: 'Change your home router\'s default password — most use "admin/admin" which attackers try first.' },
+    ],
+    quiz: [
+      { question: "Why are remote workers targets?", options: ["Work longer hours", "Home networks are less secure", "Use personal devices", "Access more data"], correctIndex: 1 },
+      { question: "What should you do with your router's default password?", options: ["Keep as default", "Write on sticky note", "Change to a strong unique password", "Share with IT"], correctIndex: 2 },
+      { question: "When should you use VPN for remote work?", options: ["Only on public Wi-Fi", "Never needed", "Always when accessing company resources", "Only for video calls"], correctIndex: 2 }
+    ]
+  },
+  {
+    id: 18, title: "Incident Response — What to Do When Hacked",
+    description: "Learn the immediate steps to take if you suspect your accounts or device are compromised.",
+    duration: "11 min", video_id: "WjV52HXUUYY", level: "Advanced", points: 25,
+    notes: [
+      { type: 'key',     emoji: '🔑', text: 'The first 60 minutes after discovering a breach are critical — fast action limits the damage.' },
+      { type: 'warning', emoji: '⚠️', text: 'Do NOT power off the device immediately — this can destroy forensic evidence needed to understand the attack.' },
+      { type: 'tip',     emoji: '💡', text: 'Change passwords from a DIFFERENT CLEAN device — not the one you suspect is compromised.' },
+      { type: 'info',    emoji: 'ℹ️', text: 'Report phishing emails to reportphishing@apwg.org or your IT security team.' },
+    ],
+    quiz: [
+      { question: "You suspect your email was hacked. First step:", options: ["Ignore and monitor", "Change password from a clean device immediately", "Delete your account", "Call the attacker"], correctIndex: 1 },
+      { question: "Should you immediately power off a hacked device?", options: ["Yes, always", "No — preserve forensic evidence", "Yes, to stop the attack", "Only laptops"], correctIndex: 1 },
+      { question: "Where to change passwords if your device is compromised?", options: ["On the compromised device", "On a trusted separate clean device", "By calling your provider", "Using safe mode"], correctIndex: 1 }
+    ]
+  },
 ];
 
 export default function LearnPage() {
@@ -365,7 +632,29 @@ export default function LearnPage() {
                         </div>
                         <h2 className="text-2xl font-bold text-white mb-2">{selectedModule.title}</h2>
                         <p className="text-[#B8BCCF] mb-6">{selectedModule.description}</p>
-                        
+
+                        {/* ── Notion-style notes ── */}
+                        {selectedModule.notes && selectedModule.notes.length > 0 && (
+                          <div className="mb-6 space-y-2">
+                            <p className="text-xs font-semibold text-[#B8BCCF] uppercase tracking-widest mb-3">📝 Module Notes</p>
+                            {selectedModule.notes.map((note, i) => {
+                              const styles: Record<string, string> = {
+                                key:     'bg-[#C0FF00]/10 border-l-4 border-[#C0FF00] text-[#d4ff66]',
+                                warning: 'bg-[#FF4D4D]/10 border-l-4 border-[#FF4D4D] text-[#ff8080]',
+                                tip:     'bg-[#00D084]/10 border-l-4 border-[#00D084] text-[#4dffb4]',
+                                info:    'bg-[#4DA6FF]/10 border-l-4 border-[#4DA6FF] text-[#80c4ff]',
+                                fact:    'bg-[#FFB800]/10 border-l-4 border-[#FFB800] text-[#ffd166]',
+                              };
+                              return (
+                                <div key={i} className={`flex gap-3 px-4 py-3 rounded-r-lg ${styles[note.type]}`}>
+                                  <span className="text-lg flex-shrink-0">{note.emoji}</span>
+                                  <p className="text-sm leading-relaxed">{note.text}</p>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        )}
+
                         {completedModules.includes(selectedModule.id) ? (
                           <div className="flex items-center gap-2 text-[#00D084] font-semibold bg-[#00D084]/10 p-4 rounded-lg border border-[#00D084]/30">
                             <Award className="w-5 h-5" />
