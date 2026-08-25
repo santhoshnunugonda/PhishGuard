@@ -180,5 +180,4 @@ MIT License — feel free to use, modify, and distribute.
 
 ## 🙏 Acknowledgements
 
-- Original project concept by [RamSuryaCH](https://github.com/RamSuryaCH/PhishGuard)
 - Built with ❤️ using Next.js, Supabase, and TailwindCSS
