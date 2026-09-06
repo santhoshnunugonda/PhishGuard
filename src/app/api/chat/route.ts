@@ -1,11 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-import OpenAI from 'openai';
+import { GoogleGenAI } from '@google/genai';
 import { createClient } from '@/lib/supabase-server';
 
-const client = new OpenAI({
-  baseURL: process.env.AZURE_OPENAI_ENDPOINT,
-  apiKey: process.env.AZURE_OPENAI_API_KEY,
-});
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
 const BASE_SYSTEM_PROMPT = `You are PhishGuard AI, a helpful cybersecurity assistant specializing in phishing awareness and online safety. Your role is to:
 
@@ -64,19 +61,25 @@ Personalize your responses based on their level and progress. For example, if th
       }
     }
 
-    const completion = await client.chat.completions.create({
-      model: process.env.AZURE_OPENAI_DEPLOYMENT || 'gpt-oss-120b',
-      messages: [
-        { role: 'system', content: BASE_SYSTEM_PROMPT + userContext },
-        ...messages,
-      ],
-      max_tokens: 1000,
-      temperature: 0.7,
+    const systemInstruction = BASE_SYSTEM_PROMPT + userContext;
+
+    // Convert standard {role, content} to Gemini expected format
+    const geminiContents = messages.map((msg: any) => ({
+      role: msg.role === 'user' ? 'user' : 'model',
+      parts: [{ text: msg.content }]
+    }));
+
+    const response = await ai.models.generateContent({
+      model: 'gemini-2.5-flash',
+      contents: geminiContents,
+      config: {
+        systemInstruction: systemInstruction,
+        temperature: 0.7,
+        maxOutputTokens: 1000,
+      }
     });
 
-    const response = completion.choices[0]?.message?.content || 'Sorry, I could not generate a response.';
-
-    return NextResponse.json({ response });
+    return NextResponse.json({ response: response.text });
   } catch (error) {
     console.error('AI Chat Error:', error);
     return NextResponse.json(

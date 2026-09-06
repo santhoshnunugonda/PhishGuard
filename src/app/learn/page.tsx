@@ -5,7 +5,7 @@ import Footer from "@/components/sections/footer";
 import { Play, Clock, Award, ChevronRight, Loader2, CheckCircle, XCircle, ArrowRight, PlayCircle, BookOpen, TrendingUp, Users } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { createClient } from "@/lib/supabase";
-import { updateUserStats } from "@/lib/updateUserStats";
+import { updateUserStats, saveModuleProgress } from "@/lib/updateUserStats";
 import Link from "next/link";
 
 declare global {
@@ -91,7 +91,7 @@ const fallbackModules: Module[] = [
   {
     id: 4, title: "Smishing — SMS Phishing",
     description: "Recognize fraudulent text messages designed to steal credentials or install malware.",
-    duration: "7 min", video_id: "hfXhJ3LcZFU", level: "Beginner", points: 15,
+    duration: "7 min", video_id: "ykP-9gFkIcs", level: "Beginner", points: 15,
     notes: [
       { type: 'key',     emoji: '🔑', text: 'Smishing texts impersonate banks, delivery services (FedEx, DHL), or government agencies.' },
       { type: 'warning', emoji: '⚠️', text: 'Never click links in unsolicited texts — go directly to the official app or website instead.' },
@@ -107,7 +107,7 @@ const fallbackModules: Module[] = [
   {
     id: 5, title: "Vishing — Voice Phishing",
     description: "Learn how phone call scams work and how to handle suspicious callers confidently.",
-    duration: "9 min", video_id: "sTqPHBSBhRs", level: "Beginner", points: 15,
+    duration: "9 min", video_id: "XbMx6D7fNSs", level: "Beginner", points: 15,
     notes: [
       { type: 'key',     emoji: '🔑', text: 'Vishing attackers impersonate tech support (Microsoft, Apple), banks, or government officials.' },
       { type: 'warning', emoji: '⚠️', text: 'Caller ID can be SPOOFED — a call from your bank\'s number may not be real.' },
@@ -123,7 +123,7 @@ const fallbackModules: Module[] = [
   {
     id: 6, title: "QR Code Phishing (Quishing)",
     description: "Discover how attackers embed malicious URLs in QR codes to bypass email security.",
-    duration: "8 min", video_id: "LWr6pWpELJI", level: "Intermediate", points: 20,
+    duration: "8 min", video_id: "dCQWdVxR_yA", level: "Intermediate", points: 20,
     notes: [
       { type: 'key',     emoji: '🔑', text: 'QR codes hide URLs — you can\'t see the destination before scanning, making them ideal for bypassing security tools.' },
       { type: 'warning', emoji: '⚠️', text: 'Attackers place fake QR codes over real ones in restaurants, parking meters, and offices.' },
@@ -187,7 +187,7 @@ const fallbackModules: Module[] = [
   {
     id: 10, title: "Spotting Fake Websites",
     description: "Learn to identify cloned websites, typosquatting domains, and fake login pages.",
-    duration: "11 min", video_id: "zflsg6TRuos", level: "Beginner", points: 15,
+    duration: "11 min", video_id: "6_QX12szXTM", level: "Beginner", points: 15,
     notes: [
       { type: 'key',     emoji: '🔑', text: 'Fake sites use typosquatting: paypa1.com, g00gle.com — always check domain spelling carefully.' },
       { type: 'warning', emoji: '⚠️', text: 'HTTPS and the padlock do NOT mean safe — phishing sites also use HTTPS. It only means encrypted.' },
@@ -299,7 +299,7 @@ const fallbackModules: Module[] = [
   {
     id: 17, title: "Cybersecurity for Remote Work",
     description: "Stay secure when working from home — protecting company data on personal networks.",
-    duration: "10 min", video_id: "Gn76M-od8SE", level: "Intermediate", points: 20,
+    duration: "10 min", video_id: "zvytQ1UxMe4", level: "Intermediate", points: 20,
     notes: [
       { type: 'key',     emoji: '🔑', text: 'Home networks are far less secure than corporate networks — remote workers are the weakest link.' },
       { type: 'warning', emoji: '⚠️', text: 'Never mix personal and work accounts on the same device — a personal breach can compromise company systems.' },
@@ -315,7 +315,7 @@ const fallbackModules: Module[] = [
   {
     id: 18, title: "Incident Response — What to Do When Hacked",
     description: "Learn the immediate steps to take if you suspect your accounts or device are compromised.",
-    duration: "11 min", video_id: "cMXPFbW0QEk", level: "Advanced", points: 25,
+    duration: "11 min", video_id: "IRSQEO0koYY", level: "Advanced", points: 25,
     notes: [
       { type: 'key',     emoji: '🔑', text: 'The first 60 minutes after discovering a breach are critical — fast action limits the damage.' },
       { type: 'warning', emoji: '⚠️', text: 'Do NOT power off the device immediately — this can destroy forensic evidence needed to understand the attack.' },
@@ -328,22 +328,7 @@ const fallbackModules: Module[] = [
       { question: "Where to change passwords if your device is compromised?", options: ["On the compromised device", "On a trusted separate clean device", "By calling your provider", "Using safe mode"], correctIndex: 1 }
     ]
   },
-  {
-    id: 19, title: "Cybersecurity Awareness & Culture",
-    description: "Build a security-first mindset and understand how to create a culture of cybersecurity at work and home.",
-    duration: "12 min", video_id: "inWWhr5tnEA", level: "Beginner", points: 15,
-    notes: [
-      { type: 'key',     emoji: '🔑', text: 'Cybersecurity is 80% people and 20% technology — a security-aware culture is your strongest defense.' },
-      { type: 'warning', emoji: '⚠️', text: 'Overconfidence is dangerous — even security experts get phished. Stay skeptical of every unexpected message.' },
-      { type: 'tip',     emoji: '💡', text: 'Report suspicious emails even if you didn\'t click — your report protects everyone in your organization.' },
-      { type: 'fact',    emoji: '📊', text: 'Organizations with strong security cultures have 52% fewer cybersecurity incidents than those without.' },
-    ],
-    quiz: [
-      { question: "What is the most important factor in cybersecurity?", options: ["Expensive software", "Security-aware people and culture", "Government regulations", "Complex passwords"], correctIndex: 1 },
-      { question: "You receive a suspicious email but didn't click anything. Should you report it?", options: ["No, just delete it", "Yes, report it to IT/security team", "Only if it happens again", "Forward it to colleagues to warn them"], correctIndex: 1 },
-      { question: "Why do security breaches still happen despite good technology?", options: ["Technology is always weak", "Human error and social engineering bypass technical controls", "Hackers are always smarter", "Security tools are too expensive"], correctIndex: 1 }
-    ]
-  },
+
 ];
 
 export default function LearnPage() {
@@ -506,26 +491,31 @@ export default function LearnPage() {
       setShowQuizResult(false);
     } else {
       setQuizCompleted(true);
-      const correctCount = [...quizAnswers, selectedAnswer === selectedModule.quiz[currentQuestion].correctIndex].filter(Boolean).length;
-      const passed = correctCount >= 2;
+      const correctCount = quizAnswers.filter(Boolean).length;
+      const passed = correctCount >= Math.ceil(selectedModule.quiz.length * 0.6); // 60% to pass
       
         if (passed && !completedModules.includes(selectedModule.id)) {
           setCompleting(true);
-          const supabase = createClient();
-          const { data: { user } } = await supabase.auth.getUser();
           
-          if (user) {
-            const { data: inserted, error: progressError } = await supabase.rpc('complete_module', {
-              user_id_param: user.id,
-              module_id_param: selectedModule.id,
-              quiz_score_param: correctCount
-            });
+          // Optimistically update the UI state immediately
+          setCompletedModules(prev => [...prev, selectedModule.id]);
 
-            if (!progressError && inserted) {
-              await updateUserStats(selectedModule.points, 'module', selectedModule.title, 'completed');
-              setCompletedModules(prev => [...prev, selectedModule.id]);
+          try {
+            const supabase = createClient();
+            const { data: { user } } = await supabase.auth.getUser();
+            
+            if (user) {
+              try {
+                await saveModuleProgress(user.id, selectedModule.id, correctCount);
+                await updateUserStats(user.id, selectedModule.points, 'module', selectedModule.title, 'completed');
+              } catch (err) {
+                console.error("Failed to save progress", err);
+              }
             }
+          } catch (error) {
+            console.error('Error saving module progress:', error);
           }
+          
           setCompleting(false);
         }
     }
@@ -557,8 +547,8 @@ export default function LearnPage() {
     );
   }
 
-  const correctAnswersCount = quizAnswers.filter(Boolean).length + (showQuizResult && selectedModule && selectedAnswer === selectedModule.quiz[currentQuestion]?.correctIndex ? 1 : 0);
-  const quizPassed = quizCompleted && correctAnswersCount >= 2;
+  const correctAnswersCount = quizAnswers.filter(Boolean).length;
+  const quizPassed = quizCompleted && correctAnswersCount >= Math.ceil((selectedModule?.quiz.length || 0) * 0.6);
 
   return (
     <div className="min-h-screen bg-[#0D1B2A]">

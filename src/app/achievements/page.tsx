@@ -5,6 +5,7 @@ import Footer from "@/components/sections/footer";
 import { useState, useEffect } from "react";
 import { Trophy, Lock, CheckCircle, Star, Target, Shield, Flame, Award, BookOpen, Zap, Crown, Medal, Loader2 } from "lucide-react";
 import { createClient } from "@/lib/supabase";
+import Link from "next/link";
 
 type Badge = {
   id: string;
@@ -227,6 +228,13 @@ const categoryLabels = {
   simulation: 'Simulation',
   streak: 'Streak',
   milestone: 'Milestone',
+};
+
+const categoryLinks: Record<string, { label: string, href: string }> = {
+  learning: { label: 'Go to Modules', href: '/learn' },
+  simulation: { label: 'Play Simulation', href: '/simulations' },
+  streak: { label: 'Daily Challenge', href: '/daily-challenge' },
+  milestone: { label: 'View Leaderboard', href: '/leaderboard' },
 };
 
 const rarityColors = {
@@ -458,17 +466,25 @@ export default function AchievementsPage() {
                       Earned!
                     </div>
                   ) : (
-                    <div>
-                      <div className="flex justify-between text-xs text-[#B8BCCF] mb-1">
-                        <span>{badge.requirement}</span>
-                        <span>{badge.progress}/{badge.total}</span>
+                    <div className="flex flex-col gap-3">
+                      <div>
+                        <div className="flex justify-between text-xs text-[#B8BCCF] mb-1">
+                          <span>{badge.requirement}</span>
+                          <span>{badge.progress}/{badge.total}</span>
+                        </div>
+                        <div className="h-2 bg-[#0D1B2A] rounded-full overflow-hidden">
+                          <div 
+                            className="h-full bg-[#C0FF00] rounded-full transition-all"
+                            style={{ width: `${(badge.progress / badge.total) * 100}%` }}
+                          />
+                        </div>
                       </div>
-                      <div className="h-2 bg-[#0D1B2A] rounded-full overflow-hidden">
-                        <div 
-                          className="h-full bg-[#C0FF00] rounded-full transition-all"
-                          style={{ width: `${(badge.progress / badge.total) * 100}%` }}
-                        />
-                      </div>
+                      <Link 
+                        href={categoryLinks[badge.category]?.href || '#'} 
+                        className="w-full py-2 bg-[#2E3A4F] hover:bg-[#C0FF00] hover:text-[#0D1B2A] text-white text-xs font-bold rounded-lg text-center transition-colors"
+                      >
+                        {categoryLinks[badge.category]?.label || 'Start'}
+                      </Link>
                     </div>
                   )}
                 </div>

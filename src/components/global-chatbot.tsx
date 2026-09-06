@@ -214,23 +214,7 @@ export function GlobalChatbot() {
           />
           <div className="flex items-center p-3 pt-0 justify-between">
             <div className="flex">
-              <Button
-                variant="ghost"
-                size="icon"
-                type="button"
-                className="h-8 w-8"
-              >
-                <Paperclip className="size-4" />
-              </Button>
-
-              <Button
-                variant="ghost"
-                size="icon"
-                type="button"
-                className="h-8 w-8"
-              >
-                <Mic className="size-4" />
-              </Button>
+              {/* Feature placeholder for future implementation */}
             </div>
             <Button type="submit" size="sm" className="ml-auto gap-1.5" disabled={isLoading}>
               Send
