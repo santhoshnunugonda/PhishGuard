@@ -6,6 +6,8 @@ import { Shield, Mail, Lock, User, ArrowRight, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
+import { LampContainer } from "@/components/ui/lamp";
 
 type Mode = "login" | "signup";
 
@@ -38,38 +40,21 @@ export default function AuthSwitch({ defaultMode = "login" }: AuthSwitchProps) {
     e.preventDefault();
     setError("");
     setLoading(true);
-
     const supabase = createClient();
 
     if (mode === "login") {
       const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
-      if (signInError) {
-        setError(signInError.message);
-        setLoading(false);
-        return;
-      }
+      if (signInError) { setError(signInError.message); setLoading(false); return; }
       window.location.href = "/dashboard";
     } else {
       const { data, error: signUpError } = await supabase.auth.signUp({
-        email,
-        password,
-        options: { data: { full_name: name } },
+        email, password, options: { data: { full_name: name } },
       });
-
-      if (signUpError) {
-        setError(signUpError.message);
-        setLoading(false);
-        return;
-      }
-
+      if (signUpError) { setError(signUpError.message); setLoading(false); return; }
       if (data.user) {
         if (!data.session) {
           const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
-          if (signInError) {
-            setError("Account created! Please check your email to confirm, then sign in.");
-            setLoading(false);
-            return;
-          }
+          if (signInError) { setError("Account created! Please check your email to confirm, then sign in."); setLoading(false); return; }
         }
         router.refresh();
         router.push("/dashboard");
@@ -77,171 +62,215 @@ export default function AuthSwitch({ defaultMode = "login" }: AuthSwitchProps) {
     }
   };
 
-  return (
-    <div className="min-h-screen bg-[#050a05] flex items-center justify-center p-4 relative overflow-hidden">
-      {/* Background grid + glow */}
-      <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2240%22%20height%3D%2240%22%20viewBox%3D%220%200%2040%2040%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%2316a34a22%22%20stroke-width%3D%221%22%3E%3Cpath%20d%3D%22M0%200h40v40H0z%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E')] opacity-40" />
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-green-500/5 blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-0 right-0 w-[400px] h-[400px] rounded-full bg-green-600/5 blur-[100px] pointer-events-none" />
+  const isSignup = mode === "signup";
 
-      <div className="w-full max-w-md relative z-10">
-        {/* Logo */}
-        <div className="text-center mb-8">
-          <Link href="/" className="inline-flex items-center gap-2 mb-6 group">
-            <div className="relative">
-              <Shield className="size-10 text-green-400 group-hover:text-green-300 transition-colors" />
-              <div className="absolute inset-0 bg-green-400/20 blur-md rounded-full group-hover:bg-green-300/30 transition-all" />
-            </div>
-            <span className="text-white font-bold text-2xl tracking-tight">
-              Phish<span className="text-green-400">Guard</span>
+  return (
+    <div className="min-h-screen bg-zinc-900 flex flex-col items-center justify-center p-4 relative overflow-hidden">
+      {/* B&W background image layer */}
+      <div
+        className="absolute inset-0 z-0"
+        style={{
+          backgroundImage: "url('/bg-forest.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
+      />
+
+      {/* Card */}
+      <div className="relative z-10 w-full max-w-4xl min-h-[600px] rounded-2xl overflow-hidden shadow-[0_0_80px_rgba(34,197,94,0.15)] flex">
+
+        {/* ── LEFT PANEL (sliding overlay) ── */}
+        <div
+          className={cn(
+            "absolute top-0 left-0 h-full w-1/2 z-20 flex flex-col items-center justify-center p-10 text-center transition-transform duration-700 ease-in-out",
+            "bg-gradient-to-br from-green-900 via-green-800 to-[#052e16]",
+            isSignup ? "translate-x-full" : "translate-x-0"
+          )}
+        >
+          {/* Decorative blobs */}
+          <div className="absolute top-[-60px] left-[-60px] w-48 h-48 bg-green-400/10 rounded-full blur-3xl" />
+          <div className="absolute bottom-[-40px] right-[-40px] w-40 h-40 bg-green-300/10 rounded-full blur-3xl" />
+
+          <Link href="/" className="flex items-center gap-2 mb-8 group">
+            <Shield className="size-8 text-green-300 group-hover:text-white transition-colors" />
+            <span className="text-white font-bold text-xl tracking-tight">
+              Phish<span className="text-green-300">Guard</span>
             </span>
           </Link>
+
+          <h2 className="text-2xl font-bold text-white mb-3">New here?</h2>
+          <p className="text-green-200/70 text-sm leading-relaxed mb-8">
+            Join us today and start your phishing awareness journey. Create your account in seconds!
+          </p>
+          <button
+            onClick={() => switchMode("signup")}
+            className="border-2 border-white text-white font-bold text-sm px-8 py-2.5 rounded-full hover:bg-white hover:text-green-900 transition-all duration-300 tracking-widest uppercase"
+          >
+            Sign Up
+          </button>
         </div>
 
-        {/* Card */}
-        <div className="bg-black/60 backdrop-blur-xl rounded-2xl border border-green-900/40 shadow-[0_0_40px_rgba(34,197,94,0.08)] overflow-hidden">
-          {/* Toggle tabs */}
-          <div className="flex bg-black/40 border-b border-green-900/30 p-1.5 gap-1.5 mx-4 mt-4 rounded-xl">
-            <button
-              type="button"
-              onClick={() => switchMode("login")}
-              className={cn(
-                "flex-1 py-2.5 text-sm font-semibold rounded-lg transition-all duration-300",
-                mode === "login"
-                  ? "bg-green-500 text-black shadow-[0_0_20px_rgba(34,197,94,0.4)]"
-                  : "text-green-500/60 hover:text-green-400"
-              )}
-            >
-              Sign In
-            </button>
-            <button
-              type="button"
-              onClick={() => switchMode("signup")}
-              className={cn(
-                "flex-1 py-2.5 text-sm font-semibold rounded-lg transition-all duration-300",
-                mode === "signup"
-                  ? "bg-green-500 text-black shadow-[0_0_20px_rgba(34,197,94,0.4)]"
-                  : "text-green-500/60 hover:text-green-400"
-              )}
-            >
-              Sign Up
-            </button>
-          </div>
+        {/* ── RIGHT PANEL (sliding overlay for signup) ── */}
+        <div
+          className={cn(
+            "absolute top-0 right-0 h-full w-1/2 z-20 flex flex-col items-center justify-center p-10 text-center transition-transform duration-700 ease-in-out",
+            "bg-gradient-to-bl from-green-900 via-green-800 to-[#052e16]",
+            isSignup ? "translate-x-0" : "translate-x-full"
+          )}
+        >
+          <div className="absolute top-[-60px] right-[-60px] w-48 h-48 bg-green-400/10 rounded-full blur-3xl" />
+          <div className="absolute bottom-[-40px] left-[-40px] w-40 h-40 bg-green-300/10 rounded-full blur-3xl" />
 
-          {/* Form */}
-          <form onSubmit={handleSubmit} className="p-6 pt-5 space-y-4">
-            {/* Heading */}
-            <div className="mb-2">
-              <h1 className="text-xl font-bold text-white">
-                {mode === "login" ? "Welcome back" : "Create your account"}
-              </h1>
-              <p className="text-sm text-green-500/60 mt-0.5">
-                {mode === "login"
-                  ? "Sign in to continue your training"
-                  : "Start your phishing awareness journey"}
-              </p>
-            </div>
+          <Link href="/" className="flex items-center gap-2 mb-8 group">
+            <Shield className="size-8 text-green-300 group-hover:text-white transition-colors" />
+            <span className="text-white font-bold text-xl tracking-tight">
+              Phish<span className="text-green-300">Guard</span>
+            </span>
+          </Link>
 
-            {/* Error */}
-            {error && (
-              <div className="p-3 bg-red-500/10 border border-red-500/30 rounded-lg text-red-400 text-sm">
-                {error}
-              </div>
-            )}
+          <h2 className="text-2xl font-bold text-white mb-3">Already one of us?</h2>
+          <p className="text-green-200/70 text-sm leading-relaxed mb-8">
+            Welcome back! Sign in to continue your training and protect what matters.
+          </p>
+          <button
+            onClick={() => switchMode("login")}
+            className="border-2 border-white text-white font-bold text-sm px-8 py-2.5 rounded-full hover:bg-white hover:text-green-900 transition-all duration-300 tracking-widest uppercase"
+          >
+            Sign In
+          </button>
+        </div>
 
-            {/* Username — signup only */}
-            <div
-              className={cn(
-                "overflow-hidden transition-all duration-300",
-                mode === "signup" ? "max-h-24 opacity-100" : "max-h-0 opacity-0"
+        {/* ── FORM PANELS (left = login, right = signup) ── */}
+        <div className="flex w-full">
+
+          {/* Login Form */}
+          <div className="w-1/2 bg-zinc-900/90 backdrop-blur-sm flex flex-col items-center justify-center p-10">
+            <h1 className="text-2xl font-bold text-white mb-1">Sign In</h1>
+            <p className="text-green-600/70 text-xs mb-6">Welcome back to PhishGuard</p>
+
+            <form onSubmit={mode === "login" ? handleSubmit : (e) => e.preventDefault()} className="w-full space-y-4">
+              {error && mode === "login" && (
+                <p className="text-red-400 text-xs text-center bg-red-500/10 border border-red-500/20 rounded-lg p-2">{error}</p>
               )}
-            >
-              <label htmlFor="name" className="block text-sm font-medium text-green-300/80 mb-1.5">
-                Username
-              </label>
+
+              {/* Email */}
               <div className="relative">
-                <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-green-500/50" />
-                <input
-                  type="text"
-                  id="name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="johndoe"
-                  required={mode === "signup"}
-                  disabled={loading}
-                  className="w-full h-11 pl-10 pr-4 rounded-lg bg-green-950/20 border border-green-900/40 text-white placeholder-green-700/50 focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500/50 transition-all text-sm"
-                />
-              </div>
-            </div>
-
-            {/* Email */}
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-green-300/80 mb-1.5">
-                Email Address
-              </label>
-              <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-green-500/50" />
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-green-600/60" />
                 <input
                   type="email"
-                  id="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="you@example.com"
-                  required
-                  disabled={loading}
-                  className="w-full h-11 pl-10 pr-4 rounded-lg bg-green-950/20 border border-green-900/40 text-white placeholder-green-700/50 focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500/50 transition-all text-sm"
+                  value={mode === "login" ? email : ""}
+                  onChange={(e) => mode === "login" && setEmail(e.target.value)}
+                  placeholder="Email"
+                  required={mode === "login"}
+                  disabled={loading || mode !== "login"}
+                  className="w-full h-12 pl-10 pr-4 rounded-xl bg-zinc-700 border-2 border-zinc-500 text-white placeholder-zinc-300 focus:outline-none focus:border-green-400 focus:ring-2 focus:ring-green-400/40 transition-all text-sm font-medium disabled:opacity-40"
                 />
               </div>
-            </div>
 
-            {/* Password */}
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-green-300/80 mb-1.5">
-                Password
-              </label>
+              {/* Password */}
               <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-green-500/50" />
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-green-600/60" />
                 <input
                   type="password"
-                  id="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder={mode === "login" ? "Enter your password" : "Min. 6 characters"}
-                  required
-                  minLength={mode === "signup" ? 6 : undefined}
-                  disabled={loading}
-                  className="w-full h-11 pl-10 pr-4 rounded-lg bg-green-950/20 border border-green-900/40 text-white placeholder-green-700/50 focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500/50 transition-all text-sm"
+                  value={mode === "login" ? password : ""}
+                  onChange={(e) => mode === "login" && setPassword(e.target.value)}
+                  placeholder="Password"
+                  required={mode === "login"}
+                  disabled={loading || mode !== "login"}
+                  className="w-full h-12 pl-10 pr-4 rounded-xl bg-zinc-700 border-2 border-zinc-500 text-white placeholder-zinc-300 focus:outline-none focus:border-green-400 focus:ring-2 focus:ring-green-400/40 transition-all text-sm font-medium disabled:opacity-40"
                 />
               </div>
-            </div>
 
-            {/* Submit */}
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full h-11 bg-green-500 text-black font-bold rounded-lg hover:bg-green-400 transition-all flex items-center justify-center gap-2 hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 shadow-[0_0_20px_rgba(34,197,94,0.3)] hover:shadow-[0_0_30px_rgba(34,197,94,0.5)] mt-2 text-sm"
-            >
-              {loading ? (
-                <>
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                  {mode === "login" ? "Signing In..." : "Creating Account..."}
-                </>
-              ) : (
-                <>
-                  {mode === "login" ? "Sign In" : "Create Account"}
-                  <ArrowRight className="w-4 h-4" />
-                </>
+              <button
+                type="submit"
+                disabled={loading || mode !== "login"}
+                className="w-full h-11 bg-green-500 text-black font-bold rounded-xl hover:bg-green-400 transition-all flex items-center justify-center gap-2 text-sm shadow-[0_0_20px_rgba(34,197,94,0.25)] hover:shadow-[0_0_30px_rgba(34,197,94,0.4)] hover:scale-[1.02] disabled:opacity-40 disabled:hover:scale-100 disabled:cursor-not-allowed tracking-wide uppercase"
+              >
+                {loading && mode === "login" ? (
+                  <><Loader2 className="w-4 h-4 animate-spin" />Signing In...</>
+                ) : (
+                  <>Login<ArrowRight className="w-4 h-4" /></>
+                )}
+              </button>
+            </form>
+
+            <p className="mt-6 text-green-800/60 text-xs">
+              <Link href="/" className="hover:text-green-400 transition-colors">← Back to home</Link>
+            </p>
+          </div>
+
+          {/* Signup Form */}
+          <div className="w-1/2 bg-zinc-900/90 backdrop-blur-sm flex flex-col items-center justify-center p-10">
+            <h1 className="text-2xl font-bold text-white mb-1">Create Account</h1>
+            <p className="text-green-600/70 text-xs mb-6">Join PhishGuard today</p>
+
+            <form onSubmit={mode === "signup" ? handleSubmit : (e) => e.preventDefault()} className="w-full space-y-3">
+              {error && mode === "signup" && (
+                <p className="text-red-400 text-xs text-center bg-red-500/10 border border-red-500/20 rounded-lg p-2">{error}</p>
               )}
-            </button>
-          </form>
-        </div>
 
-        {/* Back home */}
-        <p className="text-center text-green-700/60 text-sm mt-5">
-          <Link href="/" className="hover:text-green-400 transition-colors">
-            ← Back to home
-          </Link>
-        </p>
+              {/* Username */}
+              <div className="relative">
+                <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-green-600/60" />
+                <input
+                  type="text"
+                  value={mode === "signup" ? name : ""}
+                  onChange={(e) => mode === "signup" && setName(e.target.value)}
+                  placeholder="Username"
+                  required={mode === "signup"}
+                  disabled={loading || mode !== "signup"}
+                  className="w-full h-12 pl-10 pr-4 rounded-xl bg-zinc-700 border-2 border-zinc-500 text-white placeholder-zinc-300 focus:outline-none focus:border-green-400 focus:ring-2 focus:ring-green-400/40 transition-all text-sm font-medium disabled:opacity-40"
+                />
+              </div>
+
+              {/* Email */}
+              <div className="relative">
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-green-600/60" />
+                <input
+                  type="email"
+                  value={mode === "signup" ? email : ""}
+                  onChange={(e) => mode === "signup" && setEmail(e.target.value)}
+                  placeholder="Email"
+                  required={mode === "signup"}
+                  disabled={loading || mode !== "signup"}
+                  className="w-full h-12 pl-10 pr-4 rounded-xl bg-zinc-700 border-2 border-zinc-500 text-white placeholder-zinc-300 focus:outline-none focus:border-green-400 focus:ring-2 focus:ring-green-400/40 transition-all text-sm font-medium disabled:opacity-40"
+                />
+              </div>
+
+              {/* Password */}
+              <div className="relative">
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-green-600/60" />
+                <input
+                  type="password"
+                  value={mode === "signup" ? password : ""}
+                  onChange={(e) => mode === "signup" && setPassword(e.target.value)}
+                  placeholder="Password (min. 6 chars)"
+                  required={mode === "signup"}
+                  minLength={6}
+                  disabled={loading || mode !== "signup"}
+                  className="w-full h-12 pl-10 pr-4 rounded-xl bg-zinc-700 border-2 border-zinc-500 text-white placeholder-zinc-300 focus:outline-none focus:border-green-400 focus:ring-2 focus:ring-green-400/40 transition-all text-sm font-medium disabled:opacity-40"
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={loading || mode !== "signup"}
+                className="w-full h-11 bg-green-500 text-black font-bold rounded-xl hover:bg-green-400 transition-all flex items-center justify-center gap-2 text-sm shadow-[0_0_20px_rgba(34,197,94,0.25)] hover:shadow-[0_0_30px_rgba(34,197,94,0.4)] hover:scale-[1.02] disabled:opacity-40 disabled:hover:scale-100 disabled:cursor-not-allowed tracking-wide uppercase"
+              >
+                {loading && mode === "signup" ? (
+                  <><Loader2 className="w-4 h-4 animate-spin" />Creating Account...</>
+                ) : (
+                  <>Sign Up<ArrowRight className="w-4 h-4" /></>
+                )}
+              </button>
+            </form>
+
+            <p className="mt-6 text-green-800/60 text-xs">
+              <Link href="/" className="hover:text-green-400 transition-colors">← Back to home</Link>
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );
