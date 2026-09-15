@@ -1,13 +1,10 @@
 'use client';
 
-import { cn } from "@/lib/utils";
 import { useState } from "react";
-import { Shield, Mail, Lock, User, ArrowRight, Loader2 } from "lucide-react";
+import { Mail, Lock, User, ArrowRight, Loader2, Shield } from "lucide-react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
-import { motion } from "framer-motion";
-import { LampContainer } from "@/components/ui/lamp";
 
 type Mode = "login" | "signup";
 
@@ -40,238 +37,298 @@ export default function AuthSwitch({ defaultMode = "login" }: AuthSwitchProps) {
     e.preventDefault();
     setError("");
     setLoading(true);
-    const supabase = createClient();
 
-    if (mode === "login") {
-      const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
-      if (signInError) { setError(signInError.message); setLoading(false); return; }
-      window.location.href = "/dashboard";
-    } else {
-      const { data, error: signUpError } = await supabase.auth.signUp({
-        email, password, options: { data: { full_name: name } },
-      });
-      if (signUpError) { setError(signUpError.message); setLoading(false); return; }
-      if (data.user) {
-        if (!data.session) {
-          const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
-          if (signInError) { setError("Account created! Please check your email to confirm, then sign in."); setLoading(false); return; }
+    try {
+      const supabase = createClient();
+
+      if (mode === "login") {
+        const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
+        if (signInError) {
+          setError(signInError.message);
+          setLoading(false);
+          return;
         }
-        router.refresh();
-        router.push("/dashboard");
+        window.location.href = "/dashboard";
+      } else {
+        const { data, error: signUpError } = await supabase.auth.signUp({
+          email,
+          password,
+          options: { data: { full_name: name } },
+        });
+        if (signUpError) {
+          setError(signUpError.message);
+          setLoading(false);
+          return;
+        }
+        if (data.user) {
+          if (!data.session) {
+            const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
+            if (signInError) {
+              setError("Account created! Please check your email to confirm, then sign in.");
+              setLoading(false);
+              return;
+            }
+          }
+          router.refresh();
+          router.push("/dashboard");
+        }
       }
+    } catch {
+      setError("Network error. Please check your connection and try again.");
+      setLoading(false);
     }
   };
 
   const isSignup = mode === "signup";
 
   return (
-    <div className="min-h-screen bg-zinc-900 flex flex-col items-center justify-center p-4 relative overflow-hidden">
-      {/* B&W background image layer */}
-      <div
-        className="absolute inset-0 z-0"
-        style={{
-          backgroundImage: "url('/bg-forest.jpg')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-        }}
-      />
+    <>
+      <style>{`
+        @keyframes spin {
+          from { transform: rotate(0deg); }
+          to   { transform: rotate(360deg); }
+        }
+        .auth-input {
+          width: 100%;
+          height: 52px;
+          padding-left: 46px;
+          padding-right: 16px;
+          background: #0d1117;
+          border: 1.5px solid #21262d;
+          border-radius: 12px;
+          color: #e6edf3;
+          font-size: 15px;
+          outline: none;
+          box-sizing: border-box;
+          transition: border-color 0.2s;
+          font-family: inherit;
+        }
+        .auth-input:focus {
+          border-color: #c5f135;
+        }
+        .auth-input::placeholder {
+          color: #484f58;
+        }
+        .auth-btn-lime {
+          width: 100%;
+          height: 52px;
+          background: #c5f135;
+          color: #0d1117;
+          font-weight: 700;
+          font-size: 16px;
+          border: none;
+          border-radius: 12px;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+          transition: background 0.15s, transform 0.1s;
+          font-family: inherit;
+          margin-top: 6px;
+        }
+        .auth-btn-lime:hover:not(:disabled) {
+          background: #d4ff4f;
+          transform: translateY(-1px);
+        }
+        .auth-btn-lime:active:not(:disabled) {
+          transform: translateY(0);
+        }
+        .auth-btn-lime:disabled {
+          background: #8fa81d;
+          cursor: not-allowed;
+        }
+        .auth-link {
+          color: #c5f135;
+          font-weight: 600;
+          background: none;
+          border: none;
+          cursor: pointer;
+          padding: 0;
+          font-family: inherit;
+          font-size: 14px;
+        }
+        .auth-link:hover {
+          text-decoration: underline;
+        }
+      `}</style>
 
-      {/* Card */}
-      <div className="relative z-10 w-full max-w-4xl min-h-[600px] rounded-2xl overflow-hidden shadow-[0_0_80px_rgba(34,197,94,0.15)] flex">
+      {/* Page */}
+      <div style={{
+        background: "#0d1117",
+        minHeight: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "24px 16px",
+        fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+      }}>
 
-        {/* ── LEFT PANEL (sliding overlay) ── */}
-        <div
-          className={cn(
-            "absolute top-0 left-0 h-full w-1/2 z-20 flex flex-col items-center justify-center p-10 text-center transition-transform duration-700 ease-in-out",
-            "bg-gradient-to-br from-green-900 via-green-800 to-[#052e16]",
-            isSignup ? "translate-x-full" : "translate-x-0"
+        {/* Logo */}
+        <Link href="/" style={{
+          display: "inline-flex", alignItems: "center", gap: "10px",
+          marginBottom: "20px", textDecoration: "none",
+        }}>
+          <Shield style={{ width: 32, height: 32, color: "#c5f135" }} />
+          <span style={{ color: "#e6edf3", fontWeight: 700, fontSize: "22px", letterSpacing: "-0.3px" }}>
+            Phish<span style={{ color: "#c5f135" }}>Guard</span>
+          </span>
+        </Link>
+
+        {/* Title area — outside card, like the reference */}
+        <h1 style={{
+          color: "#e6edf3", fontWeight: 700, fontSize: "30px",
+          margin: "0 0 8px", textAlign: "center",
+        }}>
+          {isSignup ? "Create Account" : "Welcome Back"}
+        </h1>
+        <p style={{ color: "#8b949e", fontSize: "15px", margin: "0 0 28px", textAlign: "center" }}>
+          {isSignup ? "Start your phishing awareness training" : "Sign in to continue your training"}
+        </p>
+
+        {/* Card */}
+        <div style={{
+          background: "#161b22",
+          border: "1px solid #21262d",
+          borderRadius: "16px",
+          width: "100%",
+          maxWidth: "420px",
+          padding: "28px 28px 24px",
+          boxShadow: "0 16px 64px rgba(0,0,0,0.6)",
+        }}>
+
+          {/* Error alert */}
+          {error && (
+            <div style={{
+              background: "rgba(161,29,29,0.3)",
+              border: "1.5px solid rgba(239,68,68,0.5)",
+              borderRadius: "10px",
+              padding: "12px 16px",
+              color: "#f87171",
+              fontSize: "14px",
+              lineHeight: "1.5",
+              marginBottom: "20px",
+            }}>
+              {error}
+            </div>
           )}
-        >
-          {/* Decorative blobs */}
-          <div className="absolute top-[-60px] left-[-60px] w-48 h-48 bg-green-400/10 rounded-full blur-3xl" />
-          <div className="absolute bottom-[-40px] right-[-40px] w-40 h-40 bg-green-300/10 rounded-full blur-3xl" />
 
-          <Link href="/" className="flex items-center gap-2 mb-8 group">
-            <Shield className="size-8 text-green-300 group-hover:text-white transition-colors" />
-            <span className="text-white font-bold text-xl tracking-tight">
-              Phish<span className="text-green-300">Guard</span>
-            </span>
-          </Link>
+          <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "18px" }}>
 
-          <h2 className="text-2xl font-bold text-white mb-3">New here?</h2>
-          <p className="text-green-200/70 text-sm leading-relaxed mb-8">
-            Join us today and start your phishing awareness journey. Create your account in seconds!
-          </p>
-          <button
-            onClick={() => switchMode("signup")}
-            className="border-2 border-white text-white font-bold text-sm px-8 py-2.5 rounded-full hover:bg-white hover:text-green-900 transition-all duration-300 tracking-widest uppercase"
-          >
-            Sign Up
-          </button>
-        </div>
+            {/* Full Name — signup only */}
+            {isSignup && (
+              <div style={{ display: "flex", flexDirection: "column", gap: "7px" }}>
+                <label style={{ color: "#e6edf3", fontWeight: 600, fontSize: "14px" }}>
+                  Full Name
+                </label>
+                <div style={{ position: "relative" }}>
+                  <User style={{
+                    position: "absolute", left: "14px", top: "50%", transform: "translateY(-50%)",
+                    width: 18, height: 18, color: "#484f58", pointerEvents: "none",
+                  }} />
+                  <input
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="John Doe"
+                    required
+                    disabled={loading}
+                    className="auth-input"
+                  />
+                </div>
+              </div>
+            )}
 
-        {/* ── RIGHT PANEL (sliding overlay for signup) ── */}
-        <div
-          className={cn(
-            "absolute top-0 right-0 h-full w-1/2 z-20 flex flex-col items-center justify-center p-10 text-center transition-transform duration-700 ease-in-out",
-            "bg-gradient-to-bl from-green-900 via-green-800 to-[#052e16]",
-            isSignup ? "translate-x-0" : "translate-x-full"
-          )}
-        >
-          <div className="absolute top-[-60px] right-[-60px] w-48 h-48 bg-green-400/10 rounded-full blur-3xl" />
-          <div className="absolute bottom-[-40px] left-[-40px] w-40 h-40 bg-green-300/10 rounded-full blur-3xl" />
-
-          <Link href="/" className="flex items-center gap-2 mb-8 group">
-            <Shield className="size-8 text-green-300 group-hover:text-white transition-colors" />
-            <span className="text-white font-bold text-xl tracking-tight">
-              Phish<span className="text-green-300">Guard</span>
-            </span>
-          </Link>
-
-          <h2 className="text-2xl font-bold text-white mb-3">Already one of us?</h2>
-          <p className="text-green-200/70 text-sm leading-relaxed mb-8">
-            Welcome back! Sign in to continue your training and protect what matters.
-          </p>
-          <button
-            onClick={() => switchMode("login")}
-            className="border-2 border-white text-white font-bold text-sm px-8 py-2.5 rounded-full hover:bg-white hover:text-green-900 transition-all duration-300 tracking-widest uppercase"
-          >
-            Sign In
-          </button>
-        </div>
-
-        {/* ── FORM PANELS (left = login, right = signup) ── */}
-        <div className="flex w-full">
-
-          {/* Login Form */}
-          <div className="w-1/2 bg-zinc-900/90 backdrop-blur-sm flex flex-col items-center justify-center p-10">
-            <h1 className="text-2xl font-bold text-white mb-1">Sign In</h1>
-            <p className="text-green-600/70 text-xs mb-6">Welcome back to PhishGuard</p>
-
-            <form onSubmit={mode === "login" ? handleSubmit : (e) => e.preventDefault()} className="w-full space-y-4">
-              {error && mode === "login" && (
-                <p className="text-red-400 text-xs text-center bg-red-500/10 border border-red-500/20 rounded-lg p-2">{error}</p>
-              )}
-
-              {/* Email */}
-              <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-green-600/60" />
+            {/* Email */}
+            <div style={{ display: "flex", flexDirection: "column", gap: "7px" }}>
+              <label style={{ color: "#e6edf3", fontWeight: 600, fontSize: "14px" }}>
+                Email Address
+              </label>
+              <div style={{ position: "relative" }}>
+                <Mail style={{
+                  position: "absolute", left: "14px", top: "50%", transform: "translateY(-50%)",
+                  width: 18, height: 18, color: "#484f58", pointerEvents: "none",
+                }} />
                 <input
                   type="email"
-                  value={mode === "login" ? email : ""}
-                  onChange={(e) => mode === "login" && setEmail(e.target.value)}
-                  placeholder="Email"
-                  required={mode === "login"}
-                  disabled={loading || mode !== "login"}
-                  className="w-full h-12 pl-10 pr-4 rounded-xl bg-zinc-700 border-2 border-zinc-500 text-white placeholder-zinc-300 focus:outline-none focus:border-green-400 focus:ring-2 focus:ring-green-400/40 transition-all text-sm font-medium disabled:opacity-40"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="you@example.com"
+                  required
+                  disabled={loading}
+                  className="auth-input"
                 />
               </div>
+            </div>
 
-              {/* Password */}
-              <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-green-600/60" />
+            {/* Password */}
+            <div style={{ display: "flex", flexDirection: "column", gap: "7px" }}>
+              <label style={{ color: "#e6edf3", fontWeight: 600, fontSize: "14px" }}>
+                Password
+              </label>
+              <div style={{ position: "relative" }}>
+                <Lock style={{
+                  position: "absolute", left: "14px", top: "50%", transform: "translateY(-50%)",
+                  width: 18, height: 18, color: "#484f58", pointerEvents: "none",
+                }} />
                 <input
                   type="password"
-                  value={mode === "login" ? password : ""}
-                  onChange={(e) => mode === "login" && setPassword(e.target.value)}
-                  placeholder="Password"
-                  required={mode === "login"}
-                  disabled={loading || mode !== "login"}
-                  className="w-full h-12 pl-10 pr-4 rounded-xl bg-zinc-700 border-2 border-zinc-500 text-white placeholder-zinc-300 focus:outline-none focus:border-green-400 focus:ring-2 focus:ring-green-400/40 transition-all text-sm font-medium disabled:opacity-40"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder={isSignup ? "Min. 6 characters" : "Enter your password"}
+                  required
+                  minLength={isSignup ? 6 : undefined}
+                  disabled={loading}
+                  className="auth-input"
                 />
               </div>
+            </div>
 
-              <button
-                type="submit"
-                disabled={loading || mode !== "login"}
-                className="w-full h-11 bg-green-500 text-black font-bold rounded-xl hover:bg-green-400 transition-all flex items-center justify-center gap-2 text-sm shadow-[0_0_20px_rgba(34,197,94,0.25)] hover:shadow-[0_0_30px_rgba(34,197,94,0.4)] hover:scale-[1.02] disabled:opacity-40 disabled:hover:scale-100 disabled:cursor-not-allowed tracking-wide uppercase"
-              >
-                {loading && mode === "login" ? (
-                  <><Loader2 className="w-4 h-4 animate-spin" />Signing In...</>
-                ) : (
-                  <>Login<ArrowRight className="w-4 h-4" /></>
-                )}
-              </button>
-            </form>
-
-            <p className="mt-6 text-green-800/60 text-xs">
-              <Link href="/" className="hover:text-green-400 transition-colors">← Back to home</Link>
-            </p>
-          </div>
-
-          {/* Signup Form */}
-          <div className="w-1/2 bg-zinc-900/90 backdrop-blur-sm flex flex-col items-center justify-center p-10">
-            <h1 className="text-2xl font-bold text-white mb-1">Create Account</h1>
-            <p className="text-green-600/70 text-xs mb-6">Join PhishGuard today</p>
-
-            <form onSubmit={mode === "signup" ? handleSubmit : (e) => e.preventDefault()} className="w-full space-y-3">
-              {error && mode === "signup" && (
-                <p className="text-red-400 text-xs text-center bg-red-500/10 border border-red-500/20 rounded-lg p-2">{error}</p>
+            {/* Submit button */}
+            <button type="submit" disabled={loading} className="auth-btn-lime">
+              {loading ? (
+                <>
+                  <Loader2 style={{ width: 18, height: 18, animation: "spin 1s linear infinite" }} />
+                  {isSignup ? "Creating Account..." : "Signing In..."}
+                </>
+              ) : (
+                <>
+                  {isSignup ? "Create Account" : "Sign In"}
+                  <ArrowRight style={{ width: 18, height: 18 }} />
+                </>
               )}
-
-              {/* Username */}
-              <div className="relative">
-                <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-green-600/60" />
-                <input
-                  type="text"
-                  value={mode === "signup" ? name : ""}
-                  onChange={(e) => mode === "signup" && setName(e.target.value)}
-                  placeholder="Username"
-                  required={mode === "signup"}
-                  disabled={loading || mode !== "signup"}
-                  className="w-full h-12 pl-10 pr-4 rounded-xl bg-zinc-700 border-2 border-zinc-500 text-white placeholder-zinc-300 focus:outline-none focus:border-green-400 focus:ring-2 focus:ring-green-400/40 transition-all text-sm font-medium disabled:opacity-40"
-                />
-              </div>
-
-              {/* Email */}
-              <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-green-600/60" />
-                <input
-                  type="email"
-                  value={mode === "signup" ? email : ""}
-                  onChange={(e) => mode === "signup" && setEmail(e.target.value)}
-                  placeholder="Email"
-                  required={mode === "signup"}
-                  disabled={loading || mode !== "signup"}
-                  className="w-full h-12 pl-10 pr-4 rounded-xl bg-zinc-700 border-2 border-zinc-500 text-white placeholder-zinc-300 focus:outline-none focus:border-green-400 focus:ring-2 focus:ring-green-400/40 transition-all text-sm font-medium disabled:opacity-40"
-                />
-              </div>
-
-              {/* Password */}
-              <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-green-600/60" />
-                <input
-                  type="password"
-                  value={mode === "signup" ? password : ""}
-                  onChange={(e) => mode === "signup" && setPassword(e.target.value)}
-                  placeholder="Password (min. 6 chars)"
-                  required={mode === "signup"}
-                  minLength={6}
-                  disabled={loading || mode !== "signup"}
-                  className="w-full h-12 pl-10 pr-4 rounded-xl bg-zinc-700 border-2 border-zinc-500 text-white placeholder-zinc-300 focus:outline-none focus:border-green-400 focus:ring-2 focus:ring-green-400/40 transition-all text-sm font-medium disabled:opacity-40"
-                />
-              </div>
-
-              <button
-                type="submit"
-                disabled={loading || mode !== "signup"}
-                className="w-full h-11 bg-green-500 text-black font-bold rounded-xl hover:bg-green-400 transition-all flex items-center justify-center gap-2 text-sm shadow-[0_0_20px_rgba(34,197,94,0.25)] hover:shadow-[0_0_30px_rgba(34,197,94,0.4)] hover:scale-[1.02] disabled:opacity-40 disabled:hover:scale-100 disabled:cursor-not-allowed tracking-wide uppercase"
-              >
-                {loading && mode === "signup" ? (
-                  <><Loader2 className="w-4 h-4 animate-spin" />Creating Account...</>
-                ) : (
-                  <>Sign Up<ArrowRight className="w-4 h-4" /></>
-                )}
-              </button>
-            </form>
-
-            <p className="mt-6 text-green-800/60 text-xs">
-              <Link href="/" className="hover:text-green-400 transition-colors">← Back to home</Link>
-            </p>
-          </div>
+            </button>
+          </form>
         </div>
+
+        {/* Switch mode */}
+        <p style={{ textAlign: "center", marginTop: "20px", color: "#8b949e", fontSize: "14px" }}>
+          {isSignup ? (
+            <>
+              Already have an account?{" "}
+              <button onClick={() => switchMode("login")} className="auth-link">
+                Sign in
+              </button>
+            </>
+          ) : (
+            <>
+              Don&apos;t have an account?{" "}
+              <button onClick={() => switchMode("signup")} className="auth-link">
+                Sign up
+              </button>
+            </>
+          )}
+        </p>
+
+        {/* Back home */}
+        <Link href="/" style={{
+          color: "#484f58", fontSize: "13px", marginTop: "8px",
+          textDecoration: "none", transition: "color 0.2s",
+        }}>
+          ← Back to home
+        </Link>
       </div>
-    </div>
+    </>
   );
 }
